@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#070707</color>
+    <color name="colorPrimaryDark">#0F0F0F</color>
+    <color name="colorAccent">#FF5D00</color>
+    <color name="colorAccentLight">#FF701B</color>
+    <color name="colorHighlight">#33000000</color>
+
+    <!-- Icon Color -->
+    <color name="icon_ndhfos_background">#FFFFFF</color>
+
+    <!-- Custom Colors -->
+    <color name="colorHighlightList">@color/black_overlay</color>
+    <color name="colorHighlightButton">#6BFF6000</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="textHintColor">#A3CECECE</color>
+    <color name="menuBackground">#181818</color>
+
+</resources>

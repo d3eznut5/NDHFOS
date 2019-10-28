@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:elevation="5dp"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/restaurant_image"
+            android:src="@mipmap/icon_ndhfos_round"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_margin="10dp"
+            android:id="@+id/restaurant_name_tv"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:text="Restaurant Name"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:textSize="24sp"/>
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_keyboard_arrow_right"
+            android:tint="@android:color/white"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

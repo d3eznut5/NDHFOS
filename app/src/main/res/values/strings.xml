@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">NDHFOS</string>
+
+    <string name="error_fetching_restaurants">An error occurred while trying to fetch data!\n
+        Try again after some time!</string>
+
+    <string name="try_again">Try Again</string>
+
+    <string name="light_mode">Light Mode</string>
+    <string name="dark_mode">Dark Mode</string>
+
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_out">SIGN OUT</string>
+
+    <string name="internet_unavailable">Internet Unavailable</string>
+    <string name="error_message_internet">Internet is required to sign in.\n
+        Please make sure you have an active internet connection and try again!</string>
+
+    <string name="retry">RETRY</string>
+    <string name="exit">EXIT</string>
+
+    <string name="menu_coming_soon">Menu is currently unavailable!\n
+        Please check back later!</string>
+    <string name="add_to_cart">Add To Cart</string>
+
+    <string name="enter_number">Enter Phone Number</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="isd_code">+91 -</string>
+    <string name="invalid_number">Invalid Phone Number</string>
+    <string name="check_phone">Check your phone number</string>
+    <string name="verifying_notice" formatted="true">We will be verifying the phone number:
+        \n\n
+        %1$s
+        \n\n
+        Is this OK, or would you like to edit the number?
+        \n\n
+        (Note: Carrier SMS charges may apply)
+    </string>
+    <string name="ok">OK</string>
+    <string name="edit">EDIT</string>
+    <string name="try_again_no_verify">Couldn\'t verify, please try again!</string>
+    <string name="signing_in">Signing in&#8230;</string>
+    <string name="wrong_otp">Wrong OTP</string>
+    <string name="name_empty">The name field cannot be empty.</string>
+    <string name="error_updating_details">Error updating details. Please try again!</string>
+
+
+    <string name="enter_name">Enter Name (Eg. John Doe)</string>
+    <string name="block">Block</string>
+    <string-array name="blocks">
+
+        <item>G1</item>
+        <item>G2</item>
+        <item>G3</item>
+        <item>G4</item>
+        <item>B1</item>
+        <item>B2</item>
+        <item>B3</item>
+        <item>B4</item>
+        <item>B5</item>
+        <item>B6</item>
+        <item>B7</item>
+
+    </string-array>
+
+    <!-- Keys -->
+    <string name="pNum" translatable="false">phoneNumber</string>
+
+</resources>
