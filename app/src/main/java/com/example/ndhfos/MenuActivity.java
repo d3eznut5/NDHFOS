@@ -190,7 +190,7 @@ public class MenuActivity extends AppCompatActivity {
             case R.id.sign_in_menu:
                 Intent login = new Intent(MenuActivity.this,PhoneActivity.class);
                 startActivity(login);
-                overridePendingTransition(0, 0);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
 
             case R.id.sign_out_menu:

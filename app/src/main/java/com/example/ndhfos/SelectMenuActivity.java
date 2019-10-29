@@ -176,7 +176,7 @@ public class SelectMenuActivity
             case R.id.sign_in:
                 Intent login = new Intent(SelectMenuActivity.this,PhoneActivity.class);
                 startActivity(login);
-                overridePendingTransition(0,0);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 return true;
 
             case R.id.sign_out:
