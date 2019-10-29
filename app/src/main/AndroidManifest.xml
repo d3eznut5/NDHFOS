@@ -16,17 +16,26 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
-        <activity android:name=".UserDetailsActivity"></activity>
+        <activity
+            android:name=".UserDetailsActivity"
+            android:configChanges="uiMode"/>
         <activity android:name=".OTPActivity" />
         <activity
             android:name=".PhoneActivity"
             android:configChanges="uiMode" />
         <activity
             android:name=".MenuActivity"
-            android:configChanges="uiMode" />
+            android:configChanges="uiMode" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.ndhfos.SelectMenuActivity"/>
+
+        </activity>
         <activity
             android:name=".SelectMenuActivity"
-            android:configChanges="uiMode">
+            android:configChanges="uiMode"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

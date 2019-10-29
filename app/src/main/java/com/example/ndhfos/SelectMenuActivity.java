@@ -212,6 +212,11 @@ public class SelectMenuActivity
                 "key",
                 selectedRestaurant
         );
+        String restaurantName = ((Restaurant)parent.getItemAtPosition(position)).getName();
+        showMenu.putExtra(
+                "name",
+                restaurantName
+        );
         startActivity(showMenu);
         overridePendingTransition(
                 android.R.anim.fade_in,

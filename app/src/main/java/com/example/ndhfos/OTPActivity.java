@@ -174,11 +174,6 @@ public class OTPActivity extends AppCompatActivity {
 
             }
 
-            @Override
-            public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
-                Log.e(LOG_TAG,s);
-                super.onCodeAutoRetrievalTimeOut(s);
-            }
         };
 
     }

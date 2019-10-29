@@ -13,6 +13,7 @@
     <color name="colorHighlightList">#FFFFFF</color>
     <color name="colorHighlightButton">@color/colorHighlight</color>
     <color name="black_overlay">#66000000</color>
+    <color name="badge_background">@color/colorAccent</color>
     <color name="textColor">#000000</color>
     <color name="textHintColor">@android:color/darker_gray</color>
     <color name="menuBackground">@android:color/background_light</color>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ndhfos.Adapters.ItemAdapter;
+import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Item;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,9 +74,11 @@ public class MenuActivity extends AppCompatActivity {
 
             Log.e(LOG_TAG,"No key found in intent");
             finish();
+            return;
 
         }
-        key = getIntent().getExtras().getString("key");
+        key = extras.getString("key");
+        String name = extras.getString("name");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         progressBar = findViewById(R.id.loading);
@@ -83,24 +87,15 @@ public class MenuActivity extends AppCompatActivity {
         tryAgainBT = findViewById(R.id.try_again_bt);
         itemListView = findViewById(R.id.item_list);
 
-        toolbar.setTitle("Select Items");//TODO: Make unique for each restaurant
+        toolbar.setTitle(name);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); TODO: Implement Home Up Button
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         errorTV.setVisibility(View.GONE);
         tryAgainBT.setVisibility(View.GONE);
         noMenuTV.setVisibility(View.GONE);
-
-        if(items == null || items.isEmpty())
-            getItems();
-        else {
-
-            progressBar.setVisibility(View.GONE);
-            itemAdapter = new ItemAdapter(MenuActivity.this, items);
-            itemListView.setAdapter(itemAdapter);
-
-        }
 
         tryAgainBT.setOnClickListener((click)->{
 
@@ -129,18 +124,35 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        this.menu = menu;
+
+        if(items == null || items.isEmpty())
+            getItems();
+        else {
+
+            progressBar.setVisibility(View.GONE);
+            itemAdapter = new ItemAdapter(MenuActivity.this, items, menu);
+            itemListView.setAdapter(itemAdapter);
+
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         Log.i(LOG_TAG,"Inflating the options menu");
 
         getMenuInflater().inflate(R.menu.menu_menu, menu);
-        this.menu = menu;
 
         //Set icon according to theme
         SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
         String mode = preferences.getString("dark_mode",getString(R.string.light_mode));
 
-        MenuItem darkMode = menu.findItem(R.id.dark_mode);
+        MenuItem darkMode = menu.findItem(R.id.dark_mode_menu);
         darkMode.setTitle(mode);
 
         if(mode.equalsIgnoreCase(getString(R.string.dark_mode)))
@@ -152,13 +164,13 @@ public class MenuActivity extends AppCompatActivity {
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null ){
 
-            menu.findItem(R.id.sign_out).setVisible(false);
-            menu.findItem(R.id.sign_in).setVisible(true);
+            menu.findItem(R.id.sign_out_menu).setVisible(false);
+            menu.findItem(R.id.sign_in_menu).setVisible(true);
 
         } else {
 
-            menu.findItem(R.id.sign_out).setVisible(true);
-            menu.findItem(R.id.sign_in).setVisible(false);
+            menu.findItem(R.id.sign_out_menu).setVisible(true);
+            menu.findItem(R.id.sign_in_menu).setVisible(false);
 
         }
 
@@ -171,24 +183,28 @@ public class MenuActivity extends AppCompatActivity {
 
         switch(item.getItemId()) {
 
-            case R.id.sign_in:
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(MenuActivity.this);
+                return true;
+
+            case R.id.sign_in_menu:
                 Intent login = new Intent(MenuActivity.this,PhoneActivity.class);
                 startActivity(login);
                 overridePendingTransition(0, 0);
                 return true;
 
-            case R.id.sign_out:
+            case R.id.sign_out_menu:
                 FirebaseAuth.getInstance().signOut();
                 Log.i(LOG_TAG, "Signed Out");
                 Snackbar.make(getWindow().getDecorView(),
                         "Sign out successful",
                         Snackbar.LENGTH_SHORT)
                         .show();
-                menu.findItem(R.id.sign_in).setVisible(true);
-                menu.findItem(R.id.sign_out).setVisible(false);
+                menu.findItem(R.id.sign_in_menu).setVisible(true);
+                menu.findItem(R.id.sign_out_menu).setVisible(false);
                 return true;
 
-            case R.id.dark_mode:
+            case R.id.dark_mode_menu:
                 changeTheme(item);
                 return true;
 
@@ -231,53 +247,66 @@ public class MenuActivity extends AppCompatActivity {
 
         FirebaseFirestore fireStoreDb = FirebaseFirestore.getInstance();
 
-        fireStoreDb.collection("restaurants").document(key).collection("menu").get().addOnCompleteListener((task)->{
+        fireStoreDb.collection("restaurants")
+                .document(key)
+                .collection("menu")
+                .get()
+                .addOnCompleteListener((task)->{
 
-            if(task.isSuccessful() && task.getResult() != null){
+                    if(task.isSuccessful() && task.getResult() != null){
 
-                Log.i(LOG_TAG,"Menu fetch successful");
+                        Log.i(LOG_TAG,"Menu fetch successful");
 
-                for(DocumentSnapshot documentSnapshot : task.getResult().getDocuments()){
+                        for(DocumentSnapshot documentSnapshot : task.getResult().getDocuments()){
 
-                    Item currentItem = new Item(
-                            key+ documentSnapshot.getId()
-                            ,documentSnapshot.getString("name")
-                            ,Integer.parseInt(
-                                    ""+documentSnapshot
-                                            .getLong("price")
-                            )
-                    );
-                    items.add(currentItem);
+                            Long price = documentSnapshot.getLong("price");
 
-                }
+                            Item currentItem = new Item(
+                                    key+ documentSnapshot.getId()
+                                    ,documentSnapshot.getString("name")
+                                    ,price == null ? 0 : price
+                            );
+                            items.add(currentItem);
 
-                progressBar.setVisibility(View.GONE);
-                if(items.isEmpty()){
+                        }
 
-                    Log.i(LOG_TAG, "Menu unavailable");
-                    noMenuTV.setVisibility(View.VISIBLE);
-                    return;
+                        progressBar.setVisibility(View.GONE);
+                        if(items.isEmpty()){
 
-                }
+                            Log.i(LOG_TAG, "Menu unavailable");
+                            noMenuTV.setVisibility(View.VISIBLE);
+                            return;
 
-                Log.i(LOG_TAG, "Inflating ListView with data fetched");
-                itemAdapter = new ItemAdapter(
-                        MenuActivity.this,
-                        items
-                );
+                        }
 
-                itemListView.setAdapter(itemAdapter);
+                        Log.i(LOG_TAG, "Inflating ListView with data fetched");
+                        itemAdapter = new ItemAdapter(
+                                MenuActivity.this,
+                                items,
+                                menu
+                        );
 
-            } else {
+                        itemListView.setAdapter(itemAdapter);
 
-                Log.e(LOG_TAG, "Error fetching data", task.getException());
-                progressBar.setVisibility(View.GONE);
-                errorTV.setVisibility(View.VISIBLE);
-                tryAgainBT.setVisibility(View.VISIBLE);
+                    } else {
 
-            }
+                        Log.e(LOG_TAG, "Error fetching data", task.getException());
+                        progressBar.setVisibility(View.GONE);
+                        errorTV.setVisibility(View.VISIBLE);
+                        tryAgainBT.setVisibility(View.VISIBLE);
 
-        });
+                    }
+
+                });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ItemsDatabase.getInstance(getApplicationContext()).itemDAO().clearTable();
+        Log.i(LOG_TAG, "Table Cleared");
 
     }
 

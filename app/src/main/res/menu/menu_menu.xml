@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/sign_in"
+        android:id="@+id/sign_in_menu"
         android:title="@string/sign_in"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/sign_out"
+        android:id="@+id/sign_out_menu"
         android:title="@string/sign_out"
         app:showAsAction="always"
         android:visible="false"/>
 
     <item
-        android:id="@+id/dark_mode"
+        android:id="@+id/dark_mode_menu"
         android:title="@string/light_mode"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_light_mode"
@@ -22,8 +22,9 @@
 
     <item
         android:id="@+id/add_to_cart"
+        android:icon="@drawable/ic_cart"
         android:title="@string/add_to_cart"
         app:showAsAction="always"
-        android:visible="false"/>
+        app:actionLayout = "@layout/custom_cart"/>
 
 </menu>

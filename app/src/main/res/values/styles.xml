@@ -9,6 +9,7 @@
         <item name="colorControlHighlight">@color/colorHighlight</item>
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:textColor">@color/textColor</item>
+        <item name="colorControlNormal">#FFFFFF</item>
     </style>
 
     <style name="Spinner" parent="Widget.AppCompat.Light.DropDownItem.Spinner">

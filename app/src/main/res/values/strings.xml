@@ -45,7 +45,6 @@
     <string name="name_empty">The name field cannot be empty.</string>
     <string name="error_updating_details">Error updating details. Please try again!</string>
 
-
     <string name="enter_name">Enter Name (Eg. John Doe)</string>
     <string name="block">Block</string>
     <string-array name="blocks">
