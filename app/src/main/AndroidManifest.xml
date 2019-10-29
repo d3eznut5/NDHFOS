@@ -12,6 +12,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/icon_ndhfos"
         android:label="@string/app_name"
+        android:fullBackupContent="false"
         android:roundIcon="@mipmap/icon_ndhfos_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
