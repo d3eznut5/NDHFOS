@@ -305,7 +305,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        ItemsDatabase.getInstance(getApplicationContext()).itemDAO().clearTable();
+        ItemsDatabase.getInstance(getApplicationContext()).clearAllTables();
         Log.i(LOG_TAG, "Table Cleared");
 
     }

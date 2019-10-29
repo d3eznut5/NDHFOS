@@ -26,8 +26,4 @@ public interface ItemDAO{
     @Delete
     void deleteItem(Item item);
 
-    @Query("DELETE FROM items;")
-    void clearTable();
-
-
 }
