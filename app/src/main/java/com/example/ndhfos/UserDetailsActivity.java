@@ -142,7 +142,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
                 }).addOnFailureListener((exception)->{
 
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
                     doneFAB.show();
 
                     Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),R.string.error_updating_details,Snackbar.LENGTH_SHORT);

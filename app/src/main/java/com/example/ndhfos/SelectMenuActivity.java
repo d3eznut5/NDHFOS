@@ -94,14 +94,14 @@ public class SelectMenuActivity
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        errorTV.setVisibility(View.GONE);
-        tryAgainBT.setVisibility(View.GONE);
+        errorTV.setVisibility(View.INVISIBLE);
+        tryAgainBT.setVisibility(View.INVISIBLE);
 
         if(restaurants == null || restaurants.isEmpty())
             getRestaurants();
         else{
 
-            progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.INVISIBLE);
             restaurantAdapter = new RestaurantAdapter(SelectMenuActivity.this, restaurants);
             restaurantList.setAdapter(restaurantAdapter);
 
@@ -109,9 +109,9 @@ public class SelectMenuActivity
 
         tryAgainBT.setOnClickListener((click)->{
 
-            progressBar.setVisibility(View.GONE);
-            errorTV.setVisibility(View.GONE);
-            tryAgainBT.setVisibility(View.GONE);
+            progressBar.setVisibility(View.INVISIBLE);
+            errorTV.setVisibility(View.INVISIBLE);
+            tryAgainBT.setVisibility(View.INVISIBLE);
             getRestaurants();
 
         });
@@ -307,7 +307,7 @@ public class SelectMenuActivity
                 }
 
                 Log.i(LOG_TAG, "Inflating ListView with data fetched");
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
                 restaurantAdapter = new RestaurantAdapter(
                         SelectMenuActivity.this,
                         restaurants
@@ -319,7 +319,7 @@ public class SelectMenuActivity
 
                 //Error Fetching data
                 Log.e(LOG_TAG, "Error fetching data", task.getException());
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
                 errorTV.setVisibility(View.VISIBLE);
                 tryAgainBT.setVisibility(View.VISIBLE);
 

@@ -75,18 +75,18 @@ public class CheckoutActivity extends AppCompatActivity {
                 if(items.isEmpty()){
 
                     emptyView.setVisibility(View.VISIBLE);
-                    separator.setVisibility(View.GONE);
-                    totalCostHolder.setVisibility(View.GONE);
-                    confirmBlock.setVisibility(View.GONE);
-                    checkoutList.setVisibility(View.GONE);
-                    orderNumberTV.setVisibility(View.GONE);
-                    itemCountTV.setVisibility(View.GONE);
-                    paymentOptions.setVisibility(View.GONE);
-                    placeOrderBT.setVisibility(View.GONE);
+                    separator.setVisibility(View.INVISIBLE);
+                    totalCostHolder.setVisibility(View.INVISIBLE);
+                    confirmBlock.setVisibility(View.INVISIBLE);
+                    checkoutList.setVisibility(View.INVISIBLE);
+                    orderNumberTV.setVisibility(View.INVISIBLE);
+                    itemCountTV.setVisibility(View.INVISIBLE);
+                    paymentOptions.setVisibility(View.INVISIBLE);
+                    placeOrderBT.setVisibility(View.INVISIBLE);
 
                 } else {
 
-                    emptyView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.INVISIBLE);
 
                     CheckoutItemAdapter adapter = new CheckoutItemAdapter(CheckoutActivity.this, items);
                     checkoutList.setAdapter(adapter);

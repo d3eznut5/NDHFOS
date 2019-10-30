@@ -96,15 +96,15 @@ public class MenuActivity extends AppCompatActivity {
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        errorTV.setVisibility(View.GONE);
-        tryAgainBT.setVisibility(View.GONE);
-        noMenuTV.setVisibility(View.GONE);
+        errorTV.setVisibility(View.INVISIBLE);
+        tryAgainBT.setVisibility(View.INVISIBLE);
+        noMenuTV.setVisibility(View.INVISIBLE);
 
         tryAgainBT.setOnClickListener((click)->{
 
-            progressBar.setVisibility(View.GONE);
-            errorTV.setVisibility(View.GONE);
-            tryAgainBT.setVisibility(View.GONE);
+            progressBar.setVisibility(View.INVISIBLE);
+            errorTV.setVisibility(View.INVISIBLE);
+            tryAgainBT.setVisibility(View.INVISIBLE);
             getItems();
 
         });
@@ -142,7 +142,7 @@ public class MenuActivity extends AppCompatActivity {
             getItems();
         else {
 
-            progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.INVISIBLE);
             itemAdapter = new ItemAdapter(MenuActivity.this, items, menu);
             itemListView.setAdapter(itemAdapter);
 
@@ -299,7 +299,7 @@ public class MenuActivity extends AppCompatActivity {
 
                         }
 
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         if(items.isEmpty()){
 
                             Log.i(LOG_TAG, "Menu unavailable");
@@ -320,7 +320,7 @@ public class MenuActivity extends AppCompatActivity {
                     } else {
 
                         Log.e(LOG_TAG, "Error fetching data", task.getException());
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         errorTV.setVisibility(View.VISIBLE);
                         tryAgainBT.setVisibility(View.VISIBLE);
 

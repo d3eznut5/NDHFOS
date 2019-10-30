@@ -67,7 +67,7 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
 
         if(quantity == 1){
 
-            decreaseQuantityBT.setVisibility(View.GONE);
+            decreaseQuantityBT.setVisibility(View.INVISIBLE);
             increaseQuantityBT.setVisibility(View.VISIBLE);
 
         }
@@ -76,7 +76,7 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
             int currentQuantity = updateCart(item,true);
             quantityTV.setText(String.valueOf(currentQuantity));
             decreaseQuantityBT.setVisibility(View.VISIBLE);
-            deleteBT.setVisibility(View.GONE);
+            deleteBT.setVisibility(View.INVISIBLE);
         });
 
         decreaseQuantityBT.setOnClickListener((event)->{
@@ -84,7 +84,7 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
             if (currentQuantity == 1) {
 
                 deleteBT.setVisibility(View.VISIBLE);
-                decreaseQuantityBT.setVisibility(View.GONE);
+                decreaseQuantityBT.setVisibility(View.INVISIBLE);
                 quantityTV.setText("1");
 
             } else {

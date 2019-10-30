@@ -71,10 +71,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         addToCartBT.setOnClickListener((event)->{
             addToCart(item);
-            addToCartBT.setVisibility(View.GONE);
+            addToCartBT.setVisibility(View.INVISIBLE);
             increaseQuantityBT.setVisibility(View.VISIBLE);
             quantityTV.setVisibility(View.VISIBLE);
-            decreaseQuantityBT.setVisibility(View.GONE);
+            decreaseQuantityBT.setVisibility(View.INVISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
             quantityTV.setText(String.valueOf(1));
         });
@@ -83,21 +83,21 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             int currentQuantity = updateCart(item,true);
             quantityTV.setText(String.valueOf(currentQuantity));
             decreaseQuantityBT.setVisibility(View.VISIBLE);
-            deleteButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.INVISIBLE);
         });
 
         decreaseQuantityBT.setOnClickListener((event)->{
             int currentQuantity = updateCart(item,false);
             if(currentQuantity == 0){
-                increaseQuantityBT.setVisibility(View.GONE);
-                decreaseQuantityBT.setVisibility(View.GONE);
-                quantityTV.setVisibility(View.GONE);
-                deleteButton.setVisibility(View.GONE);
+                increaseQuantityBT.setVisibility(View.INVISIBLE);
+                decreaseQuantityBT.setVisibility(View.INVISIBLE);
+                quantityTV.setVisibility(View.INVISIBLE);
+                deleteButton.setVisibility(View.INVISIBLE);
                 addToCartBT.setVisibility(View.VISIBLE);
             } else if (currentQuantity == 1) {
 
                 deleteButton.setVisibility(View.VISIBLE);
-                decreaseQuantityBT.setVisibility(View.GONE);
+                decreaseQuantityBT.setVisibility(View.INVISIBLE);
                 quantityTV.setText("1");
 
             } else {
@@ -115,10 +115,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
                         deleteItem(item);
                         quantityTV.setText("1");
-                        increaseQuantityBT.setVisibility(View.GONE);
-                        decreaseQuantityBT.setVisibility(View.GONE);
-                        quantityTV.setVisibility(View.GONE);
-                        deleteButton.setVisibility(View.GONE);
+                        increaseQuantityBT.setVisibility(View.INVISIBLE);
+                        decreaseQuantityBT.setVisibility(View.INVISIBLE);
+                        quantityTV.setVisibility(View.INVISIBLE);
+                        deleteButton.setVisibility(View.INVISIBLE);
                         addToCartBT.setVisibility(View.VISIBLE);
 
                         Snackbar itemDeleted = Snackbar.make(((Activity)getContext()).findViewById(android.R.id.content)
@@ -155,10 +155,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         if(!cart.isEmpty()){
 
             addToCartBT.setVisibility(View.VISIBLE);
-            increaseQuantityBT.setVisibility(View.GONE);
-            decreaseQuantityBT.setVisibility(View.GONE);
-            quantityTV.setVisibility(View.GONE);
-            deleteButton.setVisibility(View.GONE);
+            increaseQuantityBT.setVisibility(View.INVISIBLE);
+            decreaseQuantityBT.setVisibility(View.INVISIBLE);
+            quantityTV.setVisibility(View.INVISIBLE);
+            deleteButton.setVisibility(View.INVISIBLE);
             cartItemCountTV.setVisibility(View.VISIBLE);
 
             cartItemCountTV.setText(String.valueOf(cart.size()));
@@ -167,7 +167,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
                 if(currentItem.getKey().equals(item.getKey())){
 
-                    addToCartBT.setVisibility(View.GONE);
+                    addToCartBT.setVisibility(View.INVISIBLE);
                     increaseQuantityBT.setVisibility(View.VISIBLE);
                     decreaseQuantityBT.setVisibility(View.VISIBLE);
                     quantityTV.setVisibility(View.VISIBLE);
@@ -175,13 +175,13 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                     quantityTV.setText(String.valueOf(currentItem.getQuantity()));
                     if(currentItem.getQuantity() > 1){
 
-                        deleteButton.setVisibility(View.GONE);
+                        deleteButton.setVisibility(View.INVISIBLE);
                         decreaseQuantityBT.setVisibility(View.VISIBLE);
 
                     } else {
 
                         deleteButton.setVisibility(View.VISIBLE);
-                        decreaseQuantityBT.setVisibility(View.GONE);
+                        decreaseQuantityBT.setVisibility(View.INVISIBLE);
 
                     }
 
@@ -192,11 +192,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         } else {
 
             addToCartBT.setVisibility(View.VISIBLE);
-            increaseQuantityBT.setVisibility(View.GONE);
-            decreaseQuantityBT.setVisibility(View.GONE);
-            quantityTV.setVisibility(View.GONE);
-            deleteButton.setVisibility(View.GONE);
-            cartItemCountTV.setVisibility(View.GONE);
+            increaseQuantityBT.setVisibility(View.INVISIBLE);
+            decreaseQuantityBT.setVisibility(View.INVISIBLE);
+            quantityTV.setVisibility(View.INVISIBLE);
+            deleteButton.setVisibility(View.INVISIBLE);
+            cartItemCountTV.setVisibility(View.INVISIBLE);
 
         }
 
@@ -230,7 +230,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         int itemsCount = database.itemDAO().getNumberOfItems();
 
         if(itemsCount == 0) {
-            cartItemCountTV.setVisibility(View.GONE);
+            cartItemCountTV.setVisibility(View.INVISIBLE);
             cartItemCountTV.setText(String.valueOf(0));
         } else {
 
