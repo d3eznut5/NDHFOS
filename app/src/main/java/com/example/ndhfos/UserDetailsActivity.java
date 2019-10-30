@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -145,6 +146,9 @@ public class UserDetailsActivity extends AppCompatActivity {
                     doneFAB.show();
 
                     Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),R.string.error_updating_details,Snackbar.LENGTH_SHORT);
+                    ((TextView)snackbar.getView()
+                            .findViewById(com.google.android.material.R.id.snackbar_text))
+                            .setTextColor(Color.WHITE);
                     snackbar.getView().setBackgroundColor(Color.RED);
                     snackbar.show();
 

@@ -17,5 +17,8 @@
     <color name="textColor">#000000</color>
     <color name="textHintColor">@android:color/darker_gray</color>
     <color name="menuBackground">@android:color/background_light</color>
+    <color name="buttonBackground">@color/colorAccent</color>
+    <color name="signOutSnackbarBackground">#99FF6600</color>
+    <color name="signInSnackbarBackground">#99148000</color>
 
 </resources>

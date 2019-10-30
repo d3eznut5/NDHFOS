@@ -17,5 +17,8 @@
     <color name="textColor">#FFFFFF</color>
     <color name="textHintColor">#A3CECECE</color>
     <color name="menuBackground">#181818</color>
+    <color name="buttonBackground">#181818</color>
+    <color name="signOutSnackbarBackground">#99181818</color>
+    <color name="signInSnackbarBackground">#99138000</color>
 
 </resources>

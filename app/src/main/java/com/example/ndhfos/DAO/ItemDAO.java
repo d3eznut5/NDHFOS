@@ -1,5 +1,6 @@
 package com.example.ndhfos.DAO;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -16,6 +17,12 @@ public interface ItemDAO{
 
     @Query("SELECT * FROM items;")
     List<Item> viewItems();
+
+    @Query("SELECT * FROM items;")
+    LiveData<List<Item>> viewCart();
+
+    @Query("SELECT COUNT(*) FROM items;")
+    int getNumberOfItems();
 
     @Insert
     void insertItem(Item newItem);

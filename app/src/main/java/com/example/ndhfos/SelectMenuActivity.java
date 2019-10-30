@@ -1,6 +1,7 @@
 package com.example.ndhfos;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ndhfos.Adapters.RestaurantAdapter;
+import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Restaurant;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,8 +46,18 @@ public class SelectMenuActivity
     private ArrayList<Restaurant> restaurants;
 
     private static int uiMode;
+    private static boolean loggedIn;
+    private Snackbar snackbar;
 
     private static final String LOG_TAG = SelectMenuActivity.class.getSimpleName();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        loggedIn = FirebaseAuth.getInstance().getCurrentUser() != null;
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +76,8 @@ public class SelectMenuActivity
         if(savedInstanceState != null && savedInstanceState.containsKey("restaurants"))
             restaurants = savedInstanceState
                     .getParcelableArrayList("restaurants");
+
+        loggedIn = !(FirebaseAuth.getInstance().getCurrentUser() == null);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_menu);
@@ -112,17 +126,24 @@ public class SelectMenuActivity
         super.onResume();
         supportInvalidateOptionsMenu();
 
-        if(uiMode != AppCompatDelegate.getDefaultNightMode())
-            recreate();
-
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+        ItemsDatabase.getInstance(getApplicationContext()).clearAllTables();
+        Log.i(LOG_TAG, "Table Cleared");
 
         if(uiMode != AppCompatDelegate.getDefaultNightMode())
             recreate();
+
+        if(!loggedIn && !(FirebaseAuth.getInstance().getCurrentUser() == null)){
+
+            snackbar = Snackbar.make(findViewById(android.R.id.content),getString(R.string.sign_in_successful),Snackbar.LENGTH_SHORT);
+            snackbar.getView().setBackgroundColor(getColor(R.color.signInSnackbarBackground));
+            ((TextView)snackbar.getView()
+                    .findViewById(com.google.android.material.R.id.snackbar_text))
+                    .setTextColor(Color.WHITE);
+            loggedIn = true;
+
+        } else
+            snackbar = null;
+
 
     }
 
@@ -151,17 +172,20 @@ public class SelectMenuActivity
             darkMode.setIcon(R.drawable.ic_light_mode);
 
         //Check if user is logged in and change menu accordingly
+        if(snackbar !=null)
+            snackbar.show();
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null ){
 
             menu.findItem(R.id.sign_out).setVisible(false);
             menu.findItem(R.id.sign_in).setVisible(true);
+            loggedIn = false;
 
         } else {
 
             menu.findItem(R.id.sign_out).setVisible(true);
             menu.findItem(R.id.sign_in).setVisible(false);
-
+            loggedIn = true;
         }
 
         return true;
@@ -182,10 +206,15 @@ public class SelectMenuActivity
             case R.id.sign_out:
                 FirebaseAuth.getInstance().signOut();
                 Log.i(LOG_TAG, "Signed Out");
-                Snackbar.make(getWindow().getDecorView(),
+                Snackbar signOut = Snackbar.make(findViewById(android.R.id.content),
                         "Sign out successful",
-                        Snackbar.LENGTH_SHORT)
-                        .show();
+                        Snackbar.LENGTH_SHORT);
+                signOut.getView().setBackgroundColor(getColor(R.color.signOutSnackbarBackground));
+                ((TextView)signOut.getView()
+                        .findViewById(com.google.android.material.R.id.snackbar_text))
+                        .setTextColor(Color.WHITE);
+                signOut.show();
+                loggedIn = false;
                 menu.findItem(R.id.sign_in).setVisible(true);
                 menu.findItem(R.id.sign_out).setVisible(false);
                 return true;
@@ -217,7 +246,7 @@ public class SelectMenuActivity
                 "name",
                 restaurantName
         );
-        startActivity(showMenu);
+        startActivityForResult(showMenu,1);
         overridePendingTransition(
                 android.R.anim.fade_in,
                 android.R.anim.fade_out

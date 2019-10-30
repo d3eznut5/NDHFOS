@@ -1,6 +1,7 @@
 package com.example.ndhfos.Adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
@@ -9,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,6 @@ import com.example.ndhfos.POJO.Item;
 import com.example.ndhfos.R;
 
 import java.util.List;
-import java.util.Locale;
 
 public class ItemAdapter extends ArrayAdapter<Item> {
 
@@ -52,8 +52,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Button addToCartBT = convertView.findViewById(R.id.add_to_cart_bt);
         Button increaseQuantityBT = convertView.findViewById(R.id.increase_quantity);
         Button decreaseQuantityBT = convertView.findViewById(R.id.decrease_quantity);
-
-        LinearLayout quantityChanger = convertView.findViewById(R.id.quantity_changer);
+        ImageButton deleteButton = convertView.findViewById(R.id.remove_from_cart);
 
         MenuItem cartItem = menu.findItem(R.id.add_to_cart);
 
@@ -71,30 +70,67 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         addToCartBT.setOnClickListener((event)->{
             addToCart(item);
             addToCartBT.setVisibility(View.GONE);
-            quantityChanger.setVisibility(View.VISIBLE);
+            increaseQuantityBT.setVisibility(View.VISIBLE);
+            quantityTV.setVisibility(View.VISIBLE);
+            decreaseQuantityBT.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.VISIBLE);
             quantityTV.setText(String.valueOf(1));
         });
 
         increaseQuantityBT.setOnClickListener((event)->{
             int currentQuantity = updateCart(item,true);
             quantityTV.setText(String.valueOf(currentQuantity));
+            decreaseQuantityBT.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.GONE);
         });
 
         decreaseQuantityBT.setOnClickListener((event)->{
             int currentQuantity = updateCart(item,false);
             if(currentQuantity == 0){
-                quantityChanger.setVisibility(View.GONE);
+                increaseQuantityBT.setVisibility(View.GONE);
+                decreaseQuantityBT.setVisibility(View.GONE);
+                quantityTV.setVisibility(View.GONE);
+                deleteButton.setVisibility(View.GONE);
                 addToCartBT.setVisibility(View.VISIBLE);
-            } else
+            } else if (currentQuantity == 1) {
+
+                deleteButton.setVisibility(View.VISIBLE);
+                decreaseQuantityBT.setVisibility(View.GONE);
+                quantityTV.setText("1");
+
+            } else {
+
                 quantityTV.setText(String.valueOf(item.getQuantity()));
-            quantityTV.setText(String.valueOf(item.getQuantity()));
+            }
         });
+
+        deleteButton.setOnClickListener((event)->
+
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Delete Item")
+                    .setMessage("Are you sure you want to remove "+item.getName()+" from the cart?")
+                    .setPositiveButton("Yes, please",(dialog,which)->{
+                        deleteItem(item);
+                        quantityTV.setText("1");
+                        increaseQuantityBT.setVisibility(View.GONE);
+                        decreaseQuantityBT.setVisibility(View.GONE);
+                        quantityTV.setVisibility(View.GONE);
+                        deleteButton.setVisibility(View.GONE);
+                        addToCartBT.setVisibility(View.VISIBLE);
+                    })
+                    .setNegativeButton("No, I have changed my mind",null)
+                    .create()
+                    .show()
+
+        );
 
         itemNameTV.setText(item.getName());
         priceTV.setText(
-                String.format(
-                        Locale.getDefault(),
-                        "₹ %.2f",(float)item.getPrice()
+                getContext().getResources().getString(
+
+                        R.string.price_holder,
+                        (double)item.getPrice()
+
                 )
         );
         if(item.getImage()!= null)
@@ -104,7 +140,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         if(!cart.isEmpty()){
 
             addToCartBT.setVisibility(View.VISIBLE);
-            quantityChanger.setVisibility(View.GONE);
+            increaseQuantityBT.setVisibility(View.GONE);
+            decreaseQuantityBT.setVisibility(View.GONE);
+            quantityTV.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
             cartItemCountTV.setVisibility(View.VISIBLE);
 
             cartItemCountTV.setText(String.valueOf(cart.size()));
@@ -114,8 +153,22 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                 if(currentItem.getKey().equals(item.getKey())){
 
                     addToCartBT.setVisibility(View.GONE);
-                    quantityChanger.setVisibility(View.VISIBLE);
+                    increaseQuantityBT.setVisibility(View.VISIBLE);
+                    decreaseQuantityBT.setVisibility(View.VISIBLE);
+                    quantityTV.setVisibility(View.VISIBLE);
+                    deleteButton.setVisibility(View.VISIBLE);
                     quantityTV.setText(String.valueOf(currentItem.getQuantity()));
+                    if(currentItem.getQuantity() > 1){
+
+                        deleteButton.setVisibility(View.GONE);
+                        decreaseQuantityBT.setVisibility(View.VISIBLE);
+
+                    } else {
+
+                        deleteButton.setVisibility(View.VISIBLE);
+                        decreaseQuantityBT.setVisibility(View.GONE);
+
+                    }
 
                 }
 
@@ -124,7 +177,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         } else {
 
             addToCartBT.setVisibility(View.VISIBLE);
-            quantityChanger.setVisibility(View.GONE);
+            increaseQuantityBT.setVisibility(View.GONE);
+            decreaseQuantityBT.setVisibility(View.GONE);
+            quantityTV.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
             cartItemCountTV.setVisibility(View.GONE);
 
         }
@@ -156,9 +212,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             database.itemDAO().updateItem(item);
         }
 
-        List<Item> items = database.itemDAO().viewItems();
-
-        int itemsCount = items.size();
+        int itemsCount = database.itemDAO().getNumberOfItems();
 
         if(itemsCount == 0) {
             cartItemCountTV.setVisibility(View.GONE);
@@ -171,6 +225,13 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         }
 
         return currentQuantity;
+
+    }
+
+    private void deleteItem(Item item){
+
+        item.setQuantity(0);
+        database.itemDAO().deleteItem(item);
 
     }
 

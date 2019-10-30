@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ndhfos.Adapters.ItemAdapter;
-import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Item;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,9 +42,11 @@ public class MenuActivity extends AppCompatActivity {
     private ArrayList<Item> items;
 
     private String key;
+    private Snackbar snackbar;
 
     private static final String LOG_TAG = MenuActivity.class.getSimpleName();
     private static int uiMode;
+    private static boolean loggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class MenuActivity extends AppCompatActivity {
         if(savedInstanceState != null && savedInstanceState.containsKey("items"))
             items = savedInstanceState
                     .getParcelableArrayList("items");
+
+        loggedIn = !(FirebaseAuth.getInstance().getCurrentUser() == null);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
@@ -109,18 +112,25 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
+        supportInvalidateOptionsMenu();
 
         if(uiMode != AppCompatDelegate.getDefaultNightMode())
             recreate();
 
-    }
+        if(!loggedIn && !(FirebaseAuth.getInstance().getCurrentUser() == null)){
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        supportInvalidateOptionsMenu();
+            snackbar = Snackbar.make(findViewById(android.R.id.content),getString(R.string.sign_in_successful),Snackbar.LENGTH_SHORT);
+            snackbar.getView().setBackgroundColor(getColor(R.color.signInSnackbarBackground));
+            ((TextView)snackbar.getView()
+                    .findViewById(com.google.android.material.R.id.snackbar_text))
+                    .setTextColor(Color.WHITE);
+            loggedIn = true;
+
+        } else
+            snackbar = null;
+
     }
 
     @Override
@@ -152,6 +162,15 @@ public class MenuActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
         String mode = preferences.getString("dark_mode",getString(R.string.light_mode));
 
+        menu.findItem(R.id.add_to_cart).getActionView().setOnClickListener((event)->{
+
+            Log.i(LOG_TAG,"Starting checkout process");
+            Intent checkout = new Intent(MenuActivity.this, CheckoutActivity.class);
+            startActivity(checkout);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+        });
+
         MenuItem darkMode = menu.findItem(R.id.dark_mode_menu);
         darkMode.setTitle(mode);
 
@@ -161,14 +180,17 @@ public class MenuActivity extends AppCompatActivity {
             darkMode.setIcon(R.drawable.ic_light_mode);
 
         //Check if user is logged in and change menu accordingly
+        if(snackbar != null)
+            snackbar.show();
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null ){
 
+            loggedIn = false;
             menu.findItem(R.id.sign_out_menu).setVisible(false);
             menu.findItem(R.id.sign_in_menu).setVisible(true);
 
         } else {
-
+            loggedIn = true;
             menu.findItem(R.id.sign_out_menu).setVisible(true);
             menu.findItem(R.id.sign_in_menu).setVisible(false);
 
@@ -180,6 +202,8 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        Log.i(LOG_TAG,item.getTitle().toString());
 
         switch(item.getItemId()) {
 
@@ -196,10 +220,15 @@ public class MenuActivity extends AppCompatActivity {
             case R.id.sign_out_menu:
                 FirebaseAuth.getInstance().signOut();
                 Log.i(LOG_TAG, "Signed Out");
-                Snackbar.make(getWindow().getDecorView(),
+                Snackbar signOut = Snackbar.make(findViewById(android.R.id.content),
                         "Sign out successful",
-                        Snackbar.LENGTH_SHORT)
-                        .show();
+                        Snackbar.LENGTH_SHORT);
+                signOut.getView().setBackgroundColor(getColor(R.color.signOutSnackbarBackground));
+                ((TextView)signOut.getView()
+                        .findViewById(com.google.android.material.R.id.snackbar_text))
+                        .setTextColor(Color.WHITE);
+                signOut.show();
+                loggedIn = false;
                 menu.findItem(R.id.sign_in_menu).setVisible(true);
                 menu.findItem(R.id.sign_out_menu).setVisible(false);
                 return true;
@@ -262,7 +291,7 @@ public class MenuActivity extends AppCompatActivity {
                             Long price = documentSnapshot.getLong("price");
 
                             Item currentItem = new Item(
-                                    key+ documentSnapshot.getId()
+                                    documentSnapshot.getId()
                                     ,documentSnapshot.getString("name")
                                     ,price == null ? 0 : price
                             );
@@ -298,15 +327,6 @@ public class MenuActivity extends AppCompatActivity {
                     }
 
                 });
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        ItemsDatabase.getInstance(getApplicationContext()).clearAllTables();
-        Log.i(LOG_TAG, "Table Cleared");
 
     }
 

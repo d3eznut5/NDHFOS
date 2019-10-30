@@ -6,13 +6,17 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.ndhfos.Utility.CommonMethods;
 import com.google.android.material.snackbar.Snackbar;
@@ -93,7 +97,8 @@ public class PhoneActivity extends AppCompatActivity {
 
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER:
-                        onNext();
+                        if(nextIB.isClickable())
+                            onNext();
                         return true;
                     default: break;
 
@@ -112,12 +117,15 @@ public class PhoneActivity extends AppCompatActivity {
 
         Snackbar snackbar = Snackbar.make(
 
-                decorView,
+                findViewById(android.R.id.content),
                 R.string.invalid_number,
                 Snackbar.LENGTH_SHORT
 
         );
         snackbar.getView().setBackgroundColor(Color.RED);
+        ((TextView)snackbar.getView()
+                .findViewById(com.google.android.material.R.id.snackbar_text))
+                .setTextColor(Color.WHITE);
 
         try{
 
@@ -137,15 +145,18 @@ public class PhoneActivity extends AppCompatActivity {
         }
 
         String phoneNumber = "+91"+phoneNumberET.getText().toString();
-        Log.i(LOG_TAG,"Phone number: "+phoneNumber);
+        String formattedNumber = PhoneNumberUtils.formatNumber(phoneNumber,"91");
+        Log.i(LOG_TAG,"Phone number: "+formattedNumber);
+        Spanned verifyingNotice = Html.fromHtml(getString(R.string.verifying_notice,formattedNumber));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(PhoneActivity.this)
                 .setTitle(R.string.check_phone)
-                .setMessage(getString(R.string.verifying_notice,phoneNumber))
+                .setMessage(verifyingNotice)
                 .setPositiveButton(R.string.ok, (dialog,which)->startIntent(phoneNumber))
-                .setNegativeButton(R.string.edit, null);
+                .setNegativeButton(R.string.edit, null)
+                .create()
+                .show();
 
-        builder.create().show();
 
     }
 

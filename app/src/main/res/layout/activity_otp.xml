@@ -1,113 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:animateLayoutChanges="true">
-    <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".PhoneActivity">
-
-        <ImageView
-            android:src="@drawable/ic_bg"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5"
-            android:scaleType="centerCrop"
-            android:rotation="180"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3.5"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="25dp">
-
-                <EditText
-                    android:id="@+id/otp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/enter_otp"
-                    android:layout_gravity="center"
-                    android:textSize="24sp"
-                    android:maxLength="6"
-                    android:maxLines="1"
-                    android:maxEms="6"
-                    android:inputType="number"
-                    app:backgroundTint="@color/colorAccentLight"/>
-
-                <ImageButton
-                    android:id="@+id/confirm_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_check"
-                    android:tint="@color/colorAccent"
-                    android:theme="@style/Button"
-                    android:layout_margin="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
-
-                <ProgressBar
-                    android:id="@+id/loading"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone"/>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true">
-                <TextView
-                    android:id="@+id/timer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="01:00"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="30dp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/darker_gray"/>
-
-                <TextView
-                    android:id="@+id/resend_otp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/resend_otp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="30dp"
-                    android:textAllCaps="true"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/darker_gray"
-                    android:clickable="false"
-                    android:background="?android:attr/selectableItemBackground"/>
-
-            </RelativeLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    tools:context=".OTPActivity">
 
 
     <ImageView
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:src="@drawable/ic_bg_2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"/>
+        android:id="@+id/top_left_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:rotation="90"
+        android:src="@drawable/ic_arrow_bg"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/otp_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_left_image"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="181dp"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_left_image"
+        app:layout_constraintVertical_bias="0.0">
+
+        <EditText
+            android:id="@+id/otp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/enter_otp"
+            android:inputType="number"
+            android:maxEms="6"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textSize="24sp"
+            app:backgroundTint="@color/colorAccentLight" />
+
+        <ImageButton
+            android:id="@+id/confirm_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_check"
+            android:theme="@style/Button"
+            android:tint="@color/colorAccent" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/otp_holder"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="312dp"
+        android:text="01:00"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otp_holder" />
+
+    <TextView
+        android:id="@+id/resend_otp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/otp_holder"
+        android:layout_marginStart="45dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="false"
+        android:text="@string/resend_otp"
+        android:textAllCaps="true"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otp_holder" />
+
+    <ImageView
+        android:id="@+id/bottom_right_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:rotation="270"
+        android:src="@drawable/ic_arrow_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

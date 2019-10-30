@@ -22,25 +22,26 @@
     <string name="menu_coming_soon">Menu is currently unavailable!\n
         Please check back later!</string>
     <string name="add_to_cart">Add To Cart</string>
+    <string name="price_holder">₹ %1$.2f</string>
 
     <string name="enter_number">Enter Phone Number</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="resend_otp">Resend OTP</string>
-    <string name="isd_code">+91 -</string>
+    <string name="isd_code">+91 - </string>
     <string name="invalid_number">Invalid Phone Number</string>
     <string name="check_phone">Check your phone number</string>
-    <string name="verifying_notice" formatted="true">We will be verifying the phone number:
-        \n\n
-        %1$s
-        \n\n
+    <string name="verifying_notice" formatted="true">We will be verifying the phone number
+        &lt;br>&lt;br>
+        &lt;i>%1$s&lt;/i>
+        &lt;br>&lt;br>
         Is this OK, or would you like to edit the number?
-        \n\n
+        &lt;br>&lt;br>
         (Note: Carrier SMS charges may apply)
     </string>
     <string name="ok">OK</string>
     <string name="edit">EDIT</string>
     <string name="try_again_no_verify">Couldn\'t verify, please try again!</string>
-    <string name="signing_in">Signing in&#8230;</string>
+    <string name="sign_in_successful">Sign in successful!</string>
     <string name="wrong_otp">Wrong OTP</string>
     <string name="name_empty">The name field cannot be empty.</string>
     <string name="error_updating_details">Error updating details. Please try again!</string>
@@ -62,6 +63,9 @@
         <item>B7</item>
 
     </string-array>
+
+    <string name="order_details">Order Details</string>
+    <string name="empty_cart">Cart is empty!\n\nTry adding items in cart.</string>
 
     <!-- Keys -->
     <string name="pNum" translatable="false">phoneNumber</string>

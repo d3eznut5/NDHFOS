@@ -113,7 +113,8 @@ public class OTPActivity extends AppCompatActivity {
                 {
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER:
-                        verifyOTP();
+                        if(confirmIB.isClickable())
+                            verifyOTP();
                         return true;
                     default:
                         break;
@@ -155,11 +156,14 @@ public class OTPActivity extends AppCompatActivity {
                 enableResendOTP();
                 if(snackbar.isShown())
                     snackbar.dismiss();
-                snackbar = Snackbar.make(decorView,
+                snackbar = Snackbar.make(findViewById(android.R.id.content),
                         R.string.try_again_no_verify,
                         Snackbar.LENGTH_SHORT
                 );
                 snackbar.getView().setBackgroundColor(Color.RED);
+                ((TextView)snackbar.getView()
+                        .findViewById(com.google.android.material.R.id.snackbar_text))
+                        .setTextColor(Color.WHITE);
                 snackbar.show();
 
             }
@@ -167,7 +171,10 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
 
-                snackbar = Snackbar.make(getWindow().getDecorView(), "OTP sent", Snackbar.LENGTH_SHORT);
+                snackbar = Snackbar.make(findViewById(android.R.id.content), "OTP sent", Snackbar.LENGTH_SHORT);
+                ((TextView)snackbar.getView()
+                        .findViewById(com.google.android.material.R.id.snackbar_text))
+                        .setTextColor(Color.WHITE);
                 snackbar.show();
                 verificationId = s;
                 resendingToken = forceResendingToken;
@@ -183,7 +190,7 @@ public class OTPActivity extends AppCompatActivity {
         resendTV.setTextColor(getResources().getColor(android.R.color.darker_gray,getTheme()));
         resendTV.setClickable(false);
         resendTV.setFocusable(false);
-        resendTV.setVisibility(View.GONE);
+        resendTV.setVisibility(View.INVISIBLE);
 
         timerTV.setVisibility(View.VISIBLE);
 
@@ -221,7 +228,7 @@ public class OTPActivity extends AppCompatActivity {
     private void enableResendOTP(){
 
         countDownTimer.cancel();
-        timerTV.setVisibility(View.GONE);
+        timerTV.setVisibility(View.INVISIBLE);
         resendTV.setTextColor(getResources().getColor(R.color.colorAccent,getTheme()));
         resendTV.setClickable(true);
         resendTV.setFocusable(true);
@@ -284,9 +291,6 @@ public class OTPActivity extends AppCompatActivity {
                         Log.d(LOG_TAG, "signInWithCredential:success");
                         if (snackbar.isShown())
                             snackbar.dismiss();
-                        snackbar = Snackbar.make(getWindow().getDecorView(),R.string.signing_in, Snackbar.LENGTH_SHORT);
-                        snackbar.getView().setBackgroundColor(Color.GREEN);
-                        snackbar.show();
 
                         boolean isNewUser = task.getResult().getAdditionalUserInfo() == null || task.getResult().getAdditionalUserInfo().isNewUser();
                         if(isNewUser){
@@ -308,7 +312,7 @@ public class OTPActivity extends AppCompatActivity {
                             // The verification code entered was invalid
                             if (snackbar.isShown())
                                 snackbar.dismiss();
-                            snackbar = Snackbar.make(getWindow().getDecorView(),R.string.wrong_otp, Snackbar.LENGTH_SHORT);
+                            snackbar = Snackbar.make(findViewById(android.R.id.content),R.string.wrong_otp, Snackbar.LENGTH_SHORT);
                             snackbar.getView().setBackgroundColor(Color.RED);
                             snackbar.show();
                         }
@@ -317,7 +321,7 @@ public class OTPActivity extends AppCompatActivity {
                         confirmIB.setFocusable(true);
                         confirmIB.setColorFilter(getResources().getColor(R.color.colorAccentLight,getTheme()));
 
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
 
                     }
 

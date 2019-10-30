@@ -18,23 +18,34 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
         <activity
+            android:name=".CheckoutActivity"
+            android:configChanges="uiMode"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.ndhfos.MenuActivity"/>
+        </activity>
+        <activity
             android:name=".UserDetailsActivity"
             android:configChanges="uiMode"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".OTPActivity" />
+            android:theme="@style/AppTheme.Fullscreen"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PhoneActivity"
             android:configChanges="uiMode"
-            android:screenOrientation="portrait" />
+            android:theme="@style/AppTheme.Fullscreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".OTPActivity"
+            android:configChanges="uiMode"
+            android:theme="@style/AppTheme.Fullscreen"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MenuActivity"
             android:configChanges="uiMode"
-            android:screenOrientation="portrait" >
-
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ndhfos.SelectMenuActivity"/>
-
+                android:value="com.example.ndhfos.SelectMenuActivity" />
         </activity>
         <activity
             android:name=".SelectMenuActivity"

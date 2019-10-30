@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:clipToPadding="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:orientation="horizontal"
+        android:background="@color/menuBackground"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/item_image_cart"
+            android:src="@mipmap/icon_ndhfos_round"
+            android:layout_height="60dp"
+            android:layout_width="60dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/item_name_cart_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="Item Name"
+                android:textSize="16sp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/decrease_quantity_cart"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:background="@color/colorPrimary"
+                        android:elevation="5dp"
+                        android:text="-"
+                        android:visibility="visible"
+                        android:textColor="@android:color/white"/>
+
+                    <ImageButton
+                        android:id="@+id/remove_from_checkout"
+                        android:src="@drawable/ic_bin"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@color/colorPrimary"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/current_quantity_cart_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+
+                <Button
+                    android:id="@+id/increase_quantity_cart"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:elevation="5dp"
+                    android:background="@color/colorPrimary"
+                    android:text="+"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/price_cart_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹ 0.00"
+            android:layout_gravity="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp"
+            android:layout_margin="20dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
