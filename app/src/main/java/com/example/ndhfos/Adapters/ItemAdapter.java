@@ -3,6 +3,7 @@ package com.example.ndhfos.Adapters;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import androidx.annotation.Nullable;
 import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Item;
 import com.example.ndhfos.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -110,6 +112,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                     .setTitle("Delete Item")
                     .setMessage("Are you sure you want to remove "+item.getName()+" from the cart?")
                     .setPositiveButton("Yes, please",(dialog,which)->{
+
                         deleteItem(item);
                         quantityTV.setText("1");
                         increaseQuantityBT.setVisibility(View.GONE);
@@ -117,6 +120,18 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                         quantityTV.setVisibility(View.GONE);
                         deleteButton.setVisibility(View.GONE);
                         addToCartBT.setVisibility(View.VISIBLE);
+
+                        Snackbar itemDeleted = Snackbar.make(((Activity)getContext()).findViewById(android.R.id.content)
+                                , "Removed "+item.getName()+" from cart.",
+                                Snackbar.LENGTH_SHORT
+                        );
+
+                        itemDeleted.getView().setBackgroundColor(Color.RED);
+                        ((TextView)itemDeleted.getView()
+                                .findViewById(com.google.android.material.R.id.snackbar_text))
+                                .setTextColor(Color.WHITE);
+                        itemDeleted.show();
+
                     })
                     .setNegativeButton("No, I have changed my mind",null)
                     .create()
