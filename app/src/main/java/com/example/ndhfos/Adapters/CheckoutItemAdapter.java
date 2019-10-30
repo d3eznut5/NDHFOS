@@ -2,7 +2,9 @@ package com.example.ndhfos.Adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +98,23 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
             new AlertDialog.Builder(getContext())
                     .setTitle("Delete Item")
                     .setMessage("Are you sure you want to remove "+item.getName()+" from the cart?")
-                    .setPositiveButton("Yes, please",(dialog,which)->deleteItem(item))
+                    .setPositiveButton("Yes, please",(dialog,which)->{
+
+                        deleteItem(item);
+                        Snackbar itemDeleted = Snackbar.make(((Activity)getContext()).findViewById(android.R.id.content)
+                                , "Removed "+item.getName()+" from cart.",
+                                Snackbar.LENGTH_SHORT
+                        );
+
+                        itemDeleted.getView().setBackgroundColor(Color.RED);
+                        ((TextView)itemDeleted.getView()
+                                .findViewById(com.google.android.material.R.id.snackbar_text))
+                                .setTextColor(Color.WHITE);
+                        itemDeleted.show();
+
+
+
+                    })
                     .setNegativeButton("No, I have changed my mind",null)
                     .create()
                     .show()
