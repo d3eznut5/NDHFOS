@@ -209,6 +209,7 @@ public class MenuActivity extends AppCompatActivity {
 
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(MenuActivity.this);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 return true;
 
             case R.id.sign_in_menu:
@@ -335,4 +336,19 @@ public class MenuActivity extends AppCompatActivity {
         outState.putParcelableArrayList("items",items);
         super.onSaveInstanceState(outState);
     }
+
+    @Override
+    public void recreate() {
+        finish();
+        startActivity(getIntent());
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        super.recreate();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+    }
+
 }

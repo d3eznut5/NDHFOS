@@ -35,7 +35,7 @@
         <ListView
             android:id="@+id/menu_list"
             android:layout_margin="10dp"
-            android:dividerHeight="10dp"
+            android:dividerHeight="2dp"
             android:drawSelectorOnTop="true"
             android:divider="@android:color/transparent"
             android:theme="@style/ListView"
@@ -56,7 +56,8 @@
         android:layout_height="wrap_content"
         android:text="@string/error_fetching_restaurants"
         android:layout_centerInParent="true"
-        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@android:color/darker_gray"
         android:textIsSelectable="false"
         android:textSize="18sp"/>
 

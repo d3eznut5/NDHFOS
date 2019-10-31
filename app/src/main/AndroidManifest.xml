@@ -51,6 +51,7 @@
             android:name=".SelectMenuActivity"
             android:configChanges="uiMode"
             android:launchMode="singleTop"
+            android:fitsSystemWindows = "true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -143,7 +144,6 @@ public class SelectMenuActivity
 
         } else
             snackbar = null;
-
 
     }
 
@@ -338,5 +338,17 @@ public class SelectMenuActivity
 
     }
 
+    @Override
+    public void recreate() {
+        finish();
+        startActivity(getIntent());
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        super.recreate();
+    }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+    }
 }

@@ -11,6 +11,7 @@
 
     <string name="sign_in">SIGN IN</string>
     <string name="sign_out">SIGN OUT</string>
+    <string name="time_format">%1$d:%2$d</string>
 
     <string name="internet_unavailable">Internet Unavailable</string>
     <string name="error_message_internet">Internet is required to sign in.\n
@@ -69,5 +70,11 @@
 
     <!-- Keys -->
     <string name="pNum" translatable="false">phoneNumber</string>
+
+    <!-- Content Descriptors-->
+    <string name="background_image">Background image</string>
+    <string name="arrow_next">Next arrow</string>
+    <string name="tick_icon">Tick icon</string>
+    <string name="cart_icon">Cart icon</string>
 
 </resources>

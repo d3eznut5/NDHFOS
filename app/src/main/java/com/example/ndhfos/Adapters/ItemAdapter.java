@@ -209,9 +209,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Log.i(LOG_TAG,"Added "+item.getName()+" to cart.");
         item.setQuantity(1);
         database.itemDAO().insertItem(item);
-        int currentItems = Integer.parseInt(cartItemCountTV.getText().toString());
+        int currentItems = database.itemDAO().getNumberOfItems();
         cartItemCountTV.setVisibility(View.VISIBLE);
-        cartItemCountTV.setText(String.valueOf(currentItems+1));
+        cartItemCountTV.setText(String.valueOf(currentItems));
     }
 
     private int updateCart(Item item, boolean increase){

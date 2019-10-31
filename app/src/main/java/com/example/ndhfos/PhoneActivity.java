@@ -171,7 +171,6 @@ public class PhoneActivity extends AppCompatActivity {
         startActivity(startOTPActivity);
         overridePendingTransition(android.R.anim.fade_out,android.R.anim.fade_in);
         finish();
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 
     }
 
@@ -182,5 +181,11 @@ public class PhoneActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
     }
 }

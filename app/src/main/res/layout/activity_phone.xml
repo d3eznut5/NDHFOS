@@ -14,11 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:rotation="90"
+        android:contentDescription="@string/background_image"
         android:src="@drawable/ic_arrow_bg"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -26,10 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="104dp"
-        android:layout_marginBottom="85dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="69dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_right_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_left_image">
 
@@ -50,12 +52,14 @@
             android:inputType="phone"
             android:maxEms="10"
             android:maxLength="10"
+            android:importantForAutofill="no"
             android:maxLines="1"
             android:textSize="24sp"
             app:backgroundTint="@color/colorAccentLight" />
 
         <ImageButton
             android:id="@+id/next_button"
+            android:contentDescription="@string/arrow_next"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -68,15 +72,5 @@
             android:tint="@color/colorAccent" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/bottom_right_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:rotation="270"
-        android:src="@drawable/ic_arrow_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

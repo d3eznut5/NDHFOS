@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="5dp"
-    android:clipToPadding="true"
+    android:clipToPadding="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,8 +18,8 @@
         <ImageView
             android:id="@+id/item_image_cart"
             android:src="@mipmap/icon_ndhfos_round"
-            android:layout_height="60dp"
-            android:layout_width="60dp"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"/>
 
@@ -100,7 +100,7 @@
             android:text="₹ 0.00"
             android:layout_gravity="center"
             android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_margin="20dp"/>
 
     </LinearLayout>

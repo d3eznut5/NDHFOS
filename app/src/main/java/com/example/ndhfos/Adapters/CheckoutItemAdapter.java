@@ -44,6 +44,7 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
         TextView quantityTV = convertView.findViewById(R.id.current_quantity_cart_tv);
 
         //TODO : ImageView itemImage = convertView.findViewById(R.id.item_image);
+        //TODO: Fix button clicks
 
         ImageButton deleteBT = convertView.findViewById(R.id.remove_from_checkout);
         Button increaseQuantityBT = convertView.findViewById(R.id.increase_quantity_cart);

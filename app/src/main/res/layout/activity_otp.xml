@@ -11,6 +11,7 @@
 
     <ImageView
         android:id="@+id/top_left_image"
+        android:contentDescription="@string/background_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:rotation="90"
@@ -19,6 +20,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bottom_right_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:contentDescription="@string/background_image"
+        android:rotation="270"
+        android:src="@drawable/ic_arrow_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/otp_holder"
@@ -44,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="@string/enter_otp"
+            android:importantForAutofill="no"
             android:inputType="number"
             android:maxEms="6"
             android:maxLength="6"
@@ -57,6 +70,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
+            android:contentDescription="@string/tick_icon"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
@@ -80,7 +94,7 @@
         android:layout_below="@id/otp_holder"
         android:layout_marginStart="45dp"
         android:layout_marginEnd="312dp"
-        android:text="01:00"
+        android:text="@string/time_format"
         android:textColor="@android:color/darker_gray"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,17 +117,5 @@
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/otp_holder" />
-
-    <ImageView
-        android:id="@+id/bottom_right_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:rotation="270"
-        android:src="@drawable/ic_arrow_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

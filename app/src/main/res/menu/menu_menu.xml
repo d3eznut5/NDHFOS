@@ -25,6 +25,6 @@
         android:icon="@drawable/ic_cart"
         android:title="@string/add_to_cart"
         app:showAsAction="always"
-        app:actionLayout = "@layout/custom_cart"/>
+        app:actionLayout = "@layout/custom_cart_icon"/>
 
 </menu>

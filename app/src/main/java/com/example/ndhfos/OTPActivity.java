@@ -299,11 +299,9 @@ public class OTPActivity extends AppCompatActivity {
                             startActivity(i);
                             overridePendingTransition(android.R.anim.fade_out,android.R.anim.fade_in);
                             finish();
-                            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 
                         } else
                             finish();
-                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 
                     } else {
                         // Sign in failed, display a message and update the UI
@@ -328,5 +326,14 @@ public class OTPActivity extends AppCompatActivity {
                 });
 
     }
+
+    @Override
+    public void finish(){
+
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+
+    }
+
 
 }

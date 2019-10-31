@@ -14,19 +14,25 @@
         android:padding="5dp"
         android:background="@color/menuBackground">
 
+        <ImageView
+            android:src="@drawable/ic_arrow_bg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:rotation="90"/>
+
 
         <ImageView
             android:id="@+id/item_image"
             android:src="@mipmap/icon_ndhfos_round"
-            android:layout_height="60dp"
-            android:layout_width="60dp"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
             android:layout_gravity="center"
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:layout_margin="10dp"/>
 
         <TextView
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:id="@+id/item_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,6 +120,7 @@
             android:layout_below="@id/price_tv"
             android:text="+"
             android:textColor="@android:color/white"/>
+
     </RelativeLayout>
 
 </FrameLayout>
