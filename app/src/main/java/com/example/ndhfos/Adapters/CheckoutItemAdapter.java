@@ -2,7 +2,6 @@ package com.example.ndhfos.Adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
