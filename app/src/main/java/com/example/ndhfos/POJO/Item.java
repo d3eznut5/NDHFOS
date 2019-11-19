@@ -18,8 +18,7 @@ public class Item implements Parcelable {
     private String name;
     private long price;
     private int quantity;
-    @Ignore @androidx.annotation.Nullable
-    private Uri image;
+    @Ignore @Nullable private Uri image;
 
     private static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override

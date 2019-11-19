@@ -67,6 +67,10 @@
 
     <string name="order_details">Order Details</string>
     <string name="empty_cart">Cart is empty!\n\nTry adding items in cart.</string>
+    <string name="number_of_item" formatted="true">%1$d Item</string>
+    <string name="number_of_items" formatted="true">%1$d Items</string>
+    <string name="order_number" formatted="true">Order #%1$d</string>
+    <string name="checkout">Checkout</string>
 
     <!-- Keys -->
     <string name="pNum" translatable="false">phoneNumber</string>

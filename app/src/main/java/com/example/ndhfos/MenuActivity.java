@@ -166,6 +166,7 @@ public class MenuActivity extends AppCompatActivity {
 
             Log.i(LOG_TAG,"Starting checkout process");
             Intent checkout = new Intent(MenuActivity.this, CheckoutActivity.class);
+            checkout.putExtra("restaurant",key);
             startActivity(checkout);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 

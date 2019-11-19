@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -32,7 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class SelectMenuActivity
+public class SelectRestaurantActivity
         extends AppCompatActivity
         implements AdapterView.OnItemClickListener {
 
@@ -50,7 +49,7 @@ public class SelectMenuActivity
     private static boolean loggedIn;
     private Snackbar snackbar;
 
-    private static final String LOG_TAG = SelectMenuActivity.class.getSimpleName();
+    private static final String LOG_TAG = SelectRestaurantActivity.class.getSimpleName();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -81,7 +80,7 @@ public class SelectMenuActivity
         loggedIn = !(FirebaseAuth.getInstance().getCurrentUser() == null);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_menu);
+        setContentView(R.layout.activity_select_restaurant);
 
         //Initialising variables for views
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -103,7 +102,7 @@ public class SelectMenuActivity
         else{
 
             progressBar.setVisibility(View.INVISIBLE);
-            restaurantAdapter = new RestaurantAdapter(SelectMenuActivity.this, restaurants);
+            restaurantAdapter = new RestaurantAdapter(SelectRestaurantActivity.this, restaurants);
             restaurantList.setAdapter(restaurantAdapter);
 
         }
@@ -152,7 +151,7 @@ public class SelectMenuActivity
 
         Log.i(LOG_TAG, "Inflating Options Menu");
 
-        getMenuInflater().inflate(R.menu.menu_select_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_select_restaurant, menu);
         this.menu = menu;
 
         //Set icon according to theme
@@ -198,7 +197,7 @@ public class SelectMenuActivity
         switch(item.getItemId()) {
 
             case R.id.sign_in:
-                Intent login = new Intent(SelectMenuActivity.this,PhoneActivity.class);
+                Intent login = new Intent(SelectRestaurantActivity.this,PhoneActivity.class);
                 startActivity(login);
                 overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 return true;
@@ -234,7 +233,7 @@ public class SelectMenuActivity
 
         String selectedRestaurant = view.getTag().toString();
         Intent showMenu = new Intent(
-                SelectMenuActivity.this,
+                SelectRestaurantActivity.this,
                 MenuActivity.class
         );
         showMenu.putExtra(
@@ -309,7 +308,7 @@ public class SelectMenuActivity
                 Log.i(LOG_TAG, "Inflating ListView with data fetched");
                 progressBar.setVisibility(View.INVISIBLE);
                 restaurantAdapter = new RestaurantAdapter(
-                        SelectMenuActivity.this,
+                        SelectRestaurantActivity.this,
                         restaurants
                 );
 

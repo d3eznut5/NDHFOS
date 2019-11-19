@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Order #1234"
+        android:text="@string/order_number"
         android:layout_marginTop="10dp"/>
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:textColor = "@color/textHintColor"
-        android:text="10 Items"/>
+        android:text="@string/number_of_items"/>
 
     <ListView
         android:id="@+id/list_checkout"
@@ -159,7 +159,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:text="CHECKOUT"
+        android:text="@string/checkout"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"
         android:foreground="?android:attr/selectableItemBackground"
