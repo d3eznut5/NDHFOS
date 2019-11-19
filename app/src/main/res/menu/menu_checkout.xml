@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sign_in"
+        android:title="@string/sign_in"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/sign_out"
+        android:title="@string/sign_out"
+        app:showAsAction="always"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/dark_mode"
+        android:title="@string/light_mode"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_light_mode"
+        android:visible="true"/>
+
+</menu>

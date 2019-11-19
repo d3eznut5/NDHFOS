@@ -71,6 +71,14 @@
     <string name="number_of_items" formatted="true">%1$d Items</string>
     <string name="order_number" formatted="true">Order #%1$d</string>
     <string name="checkout">Checkout</string>
+    <string name="confirm_block">Confirm Block</string>
+    <string name="online_payment">Online Payment</string>
+    <string name="cod">Cash On Delivery</string>
+    <string name="total_cost">Total Cost</string>
+    <string name="order_placed">Order Placed</string>
+    <string name="order_message">Your order was successfully placed
+    &lt;br>&lt;br>
+    Please keep ready &lt;i>₹ %1$.2f&lt;/i></string>
 
     <!-- Keys -->
     <string name="pNum" translatable="false">phoneNumber</string>

@@ -68,9 +68,16 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
         if(quantity == 1){
 
             decreaseQuantityBT.setVisibility(View.INVISIBLE);
-            increaseQuantityBT.setVisibility(View.VISIBLE);
+            deleteBT.setVisibility(View.VISIBLE);
+
+        } else {
+
+            decreaseQuantityBT.setVisibility(View.VISIBLE);
+            deleteBT.setVisibility(View.INVISIBLE);
 
         }
+
+        Log.i(LOG_TAG,"Current Quantity"+quantity+" "+item.getName());
 
         increaseQuantityBT.setOnClickListener((event)->{
             int currentQuantity = updateCart(item,true);

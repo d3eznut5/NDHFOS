@@ -77,7 +77,7 @@ public class SelectRestaurantActivity
             restaurants = savedInstanceState
                     .getParcelableArrayList("restaurants");
 
-        loggedIn = !(FirebaseAuth.getInstance().getCurrentUser() == null);
+        loggedIn = FirebaseAuth.getInstance().getCurrentUser() != null;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_restaurant);
