@@ -154,7 +154,7 @@ public class OTPActivity extends AppCompatActivity {
 
                 Log.e(LOG_TAG,"Verification Failed",e);
                 enableResendOTP();
-                if(snackbar.isShown())
+                if(snackbar!=null && snackbar.isShown())
                     snackbar.dismiss();
                 snackbar = Snackbar.make(findViewById(android.R.id.content),
                         R.string.try_again_no_verify,
@@ -289,7 +289,7 @@ public class OTPActivity extends AppCompatActivity {
                         // Sign in success
                         countDownTimer.cancel();
                         Log.d(LOG_TAG, "signInWithCredential:success");
-                        if (snackbar.isShown())
+                        if (snackbar!=null && snackbar.isShown())
                             snackbar.dismiss();
 
                         boolean isNewUser = task.getResult().getAdditionalUserInfo() == null || task.getResult().getAdditionalUserInfo().isNewUser();
@@ -308,7 +308,7 @@ public class OTPActivity extends AppCompatActivity {
                         Log.w(LOG_TAG, "signInWithCredential:failure", task.getException());
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
-                            if (snackbar.isShown())
+                            if (snackbar!=null && snackbar.isShown())
                                 snackbar.dismiss();
                             snackbar = Snackbar.make(findViewById(android.R.id.content),R.string.wrong_otp, Snackbar.LENGTH_SHORT);
                             snackbar.getView().setBackgroundColor(Color.RED);

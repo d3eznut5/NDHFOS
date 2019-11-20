@@ -20,7 +20,7 @@ public class Item implements Parcelable {
     private int quantity;
     @Ignore @Nullable private Uri image;
 
-    private static final Creator<Item> CREATOR = new Creator<Item>() {
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override
         public Item createFromParcel(Parcel source) { return new Item(source);}
 

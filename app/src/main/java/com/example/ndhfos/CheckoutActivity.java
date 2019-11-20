@@ -290,8 +290,6 @@ public class CheckoutActivity extends AppCompatActivity {
         );
 
         blockSpinner.setAdapter(blockAdapter);
-        if(loggedIn)
-            getUserDetails();
 
     }
 
@@ -314,6 +312,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
         } else
             snackbar = null;
+
+        if(loggedIn)
+            getUserDetails();
     }
 
     @Override
