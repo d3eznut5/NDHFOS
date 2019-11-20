@@ -1,5 +1,6 @@
 package com.example.ndhfos;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -266,7 +267,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     new AlertDialog.Builder(CheckoutActivity.this)
                             .setTitle(R.string.order_placed)
                             .setMessage(orderNotice)
-                            .setPositiveButton(R.string.ok,(dialog,which)->CheckoutActivity.this.finish())
+                            .setPositiveButton(R.string.ok,(dialog,which)->{
+
+                                setResult(Activity.RESULT_OK, new Intent());
+                                CheckoutActivity.this.finish();
+
+                            })
                             .create()
                             .show();
 

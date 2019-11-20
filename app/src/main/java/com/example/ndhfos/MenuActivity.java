@@ -1,11 +1,13 @@
 package com.example.ndhfos;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -134,6 +136,20 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode == 1){
+
+            if(resultCode == Activity.RESULT_OK)
+                finish();
+
+        }
+
+        super.onActivityResult(requestCode,resultCode,data);
+
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         this.menu = menu;
@@ -167,7 +183,7 @@ public class MenuActivity extends AppCompatActivity {
             Log.i(LOG_TAG,"Starting checkout process");
             Intent checkout = new Intent(MenuActivity.this, CheckoutActivity.class);
             checkout.putExtra("restaurant",key);
-            startActivity(checkout);
+            startActivityForResult(checkout,1);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
