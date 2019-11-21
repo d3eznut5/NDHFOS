@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
 import com.example.ndhfos.Adapters.CheckoutItemAdapter;
 import com.example.ndhfos.Database.ItemsDatabase;
@@ -127,6 +128,11 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
+
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(CheckoutActivity.this);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                return true;
 
             case R.id.sign_in:
                 Intent login = new Intent(CheckoutActivity.this,PhoneActivity.class);
