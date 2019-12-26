@@ -16,11 +16,11 @@ This is a prototype created by Shardav Lad, student of Manipal University Jaipur
     keytool -list -v --alias androiddebugkey -keystore ~/.android/debug.keystore
     ```
 
-    Then copy the SHA1 fingerprint
+    Then copy the **SHA1** fingerprint
 
 3. In the project settings for your firebase app, scroll down and add the SHA1 fingerprint to your project.
 
-4. Download the google-services.json file and save it in the NDHFOS/app/ folder.
+4. Download the google-services.json file and save it in the $PROJECT_DIR/app/ folder.
 
 5. Run the debug build.
 
