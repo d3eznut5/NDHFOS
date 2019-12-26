@@ -13,24 +13,24 @@ import com.example.ndhfos.POJO.Item;
 import java.util.List;
 
 @Dao
-public interface ItemDAO{
-
-    @Query("SELECT * FROM items;")
-    List<Item> viewItems();
-
-    @Query("SELECT * FROM items;")
-    LiveData<List<Item>> viewCart();
-
-    @Query("SELECT COUNT(*) FROM items;")
-    LiveData<Integer> getNumberOfItems();
-
-    @Insert
-    void insertItem(Item newItem);
-
-    @Update (onConflict = OnConflictStrategy.REPLACE)
-    void updateItem(Item item);
-
-    @Delete
-    void deleteItem(Item item);
-
+public interface ItemDAO {
+	
+	@Query ( "SELECT * FROM items;" )
+	List<Item> viewItems ();
+	
+	@Query ( "SELECT * FROM items;" )
+	LiveData<List<Item>> viewCart ();
+	
+	@Query ( "SELECT COUNT(*) FROM items;" )
+	LiveData<Integer> getNumberOfItems ();
+	
+	@Insert
+	void insertItem ( Item newItem );
+	
+	@Update ( onConflict = OnConflictStrategy.REPLACE )
+	void updateItem ( Item item );
+	
+	@Delete
+	void deleteItem ( Item item );
+	
 }
