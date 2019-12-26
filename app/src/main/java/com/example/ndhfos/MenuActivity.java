@@ -23,13 +23,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ndhfos.Adapters.ItemAdapter;
+import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Item;
+import com.example.ndhfos.Utility.AppExecutors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -53,18 +56,18 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        String setToMode = getSharedPreferences("settings",Context.MODE_PRIVATE)
-                .getString("dark_mode",getString(R.string.light_mode));
+        String setToMode = getSharedPreferences("settings", Context.MODE_PRIVATE)
+                .getString("dark_mode", getString(R.string.light_mode));
 
-        uiMode = setToMode.equals(getString(R.string.light_mode))?
-                AppCompatDelegate.MODE_NIGHT_NO:
+        uiMode = setToMode.equals(getString(R.string.light_mode)) ?
+                AppCompatDelegate.MODE_NIGHT_NO :
                 AppCompatDelegate.MODE_NIGHT_YES;
 
-        Log.i(LOG_TAG,"Changing theme to "+setToMode);
+        Log.i(LOG_TAG, "Changing theme to " + setToMode);
 
         AppCompatDelegate.setDefaultNightMode(uiMode);
 
-        if(savedInstanceState != null && savedInstanceState.containsKey("items"))
+        if (savedInstanceState != null && savedInstanceState.containsKey("items"))
             items = savedInstanceState
                     .getParcelableArrayList("items");
 
@@ -75,9 +78,9 @@ public class MenuActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        if(extras == null || !extras.containsKey("key")){
+        if (extras == null || !extras.containsKey("key")) {
 
-            Log.e(LOG_TAG,"No key found in intent");
+            Log.e(LOG_TAG, "No key found in intent");
             finish();
             return;
 
@@ -95,14 +98,14 @@ public class MenuActivity extends AppCompatActivity {
         toolbar.setTitle(name);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         errorTV.setVisibility(View.INVISIBLE);
         tryAgainBT.setVisibility(View.INVISIBLE);
         noMenuTV.setVisibility(View.INVISIBLE);
 
-        tryAgainBT.setOnClickListener((click)->{
+        tryAgainBT.setOnClickListener((click) -> {
 
             progressBar.setVisibility(View.INVISIBLE);
             errorTV.setVisibility(View.INVISIBLE);
@@ -118,14 +121,14 @@ public class MenuActivity extends AppCompatActivity {
         super.onResume();
         supportInvalidateOptionsMenu();
 
-        if(uiMode != AppCompatDelegate.getDefaultNightMode())
+        if (uiMode != AppCompatDelegate.getDefaultNightMode())
             recreate();
 
-        if(!loggedIn && !(FirebaseAuth.getInstance().getCurrentUser() == null)){
+        if (!loggedIn && !(FirebaseAuth.getInstance().getCurrentUser() == null)) {
 
-            snackbar = Snackbar.make(findViewById(android.R.id.content),getString(R.string.sign_in_successful),Snackbar.LENGTH_SHORT);
+            snackbar = Snackbar.make(findViewById(android.R.id.content), getString(R.string.sign_in_successful), Snackbar.LENGTH_SHORT);
             snackbar.getView().setBackgroundColor(getColor(R.color.signInSnackbarBackground));
-            ((TextView)snackbar.getView()
+            ((TextView) snackbar.getView()
                     .findViewById(com.google.android.material.R.id.snackbar_text))
                     .setTextColor(Color.WHITE);
             loggedIn = true;
@@ -133,19 +136,49 @@ public class MenuActivity extends AppCompatActivity {
         } else
             snackbar = null;
 
+        AppExecutors.getInstance().getDiskIO().execute(() -> {
+
+            List<Item> items = ItemsDatabase.getInstance(MenuActivity.this).itemDAO().viewItems();
+
+            if (this.items != null && !this.items.isEmpty()) {
+
+                for (Item item : this.items) {
+
+                    if (items.contains(item)) {
+
+                        int index = items.indexOf(item);
+                        item.setQuantity(items.get(index).getQuantity());
+
+                    } else
+                        item.setQuantity(0);
+
+                }
+
+                runOnUiThread(() -> {
+                    itemAdapter = new ItemAdapter(MenuActivity.this, this.items);
+                    itemListView.setAdapter(itemAdapter);
+                    int index = 0;
+                    for (Item item : this.items)
+                        Log.e(LOG_TAG, String.format("Why isn't this working? Index: %d Quantity: %d", index++, item.getQuantity()));
+                });
+
+            }
+
+        });
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if(requestCode == 1){
+        if (requestCode == 1) {
 
-            if(resultCode == Activity.RESULT_OK)
+            if (resultCode == Activity.RESULT_OK)
                 finish();
 
         }
 
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 
@@ -154,12 +187,12 @@ public class MenuActivity extends AppCompatActivity {
 
         this.menu = menu;
 
-        if(items == null || items.isEmpty())
+        if (items == null || items.isEmpty())
             getItems();
         else {
 
             progressBar.setVisibility(View.INVISIBLE);
-            itemAdapter = new ItemAdapter(MenuActivity.this, items, menu);
+            itemAdapter = new ItemAdapter(MenuActivity.this, items);
             itemListView.setAdapter(itemAdapter);
 
         }
@@ -170,20 +203,20 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.i(LOG_TAG,"Inflating the options menu");
+        Log.i(LOG_TAG, "Inflating the options menu");
 
         getMenuInflater().inflate(R.menu.menu_menu, menu);
 
         //Set icon according to theme
         SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        String mode = preferences.getString("dark_mode",getString(R.string.light_mode));
+        String mode = preferences.getString("dark_mode", getString(R.string.light_mode));
 
-        menu.findItem(R.id.add_to_cart).getActionView().setOnClickListener((event)->{
+        menu.findItem(R.id.add_to_cart).getActionView().setOnClickListener((event) -> {
 
-            Log.i(LOG_TAG,"Starting checkout process");
+            Log.i(LOG_TAG, "Starting checkout process");
             Intent checkout = new Intent(MenuActivity.this, CheckoutActivity.class);
-            checkout.putExtra("restaurant",key);
-            startActivityForResult(checkout,1);
+            checkout.putExtra("restaurant", key);
+            startActivityForResult(checkout, 1);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
@@ -191,16 +224,16 @@ public class MenuActivity extends AppCompatActivity {
         MenuItem darkMode = menu.findItem(R.id.dark_mode_menu);
         darkMode.setTitle(mode);
 
-        if(mode.equalsIgnoreCase(getString(R.string.dark_mode)))
+        if (mode.equalsIgnoreCase(getString(R.string.dark_mode)))
             darkMode.setIcon(R.drawable.ic_dark_mode);
         else
             darkMode.setIcon(R.drawable.ic_light_mode);
 
         //Check if user is logged in and change menu accordingly
-        if(snackbar != null)
+        if (snackbar != null)
             snackbar.show();
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null ){
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
 
             loggedIn = false;
             menu.findItem(R.id.sign_out_menu).setVisible(false);
@@ -213,6 +246,34 @@ public class MenuActivity extends AppCompatActivity {
 
         }
 
+        MenuItem cartItem = menu.findItem(R.id.add_to_cart);
+
+        View actionView = cartItem.getActionView();
+        TextView cartItemCountTV = actionView.findViewById(R.id.cart_badge);
+
+        ItemsDatabase.getInstance(getApplicationContext())
+                .itemDAO()
+                .getNumberOfItems()
+                .observe(MenuActivity.this, count -> {
+
+                    if (count == 0) {
+                        cartItemCountTV.setVisibility(View.INVISIBLE);
+                        cartItemCountTV.setText(String.valueOf(0));
+                    } else if (count < 100) {
+
+                        cartItemCountTV.setText(String.valueOf(count));
+                        cartItemCountTV.setVisibility(View.VISIBLE);
+
+                    } else {
+
+                        cartItemCountTV.setText(R.string.max_cart_value_display_text);
+                        cartItemCountTV.setVisibility(View.VISIBLE);
+
+                    }
+
+                });
+
+
         return true;
 
     }
@@ -220,17 +281,17 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        Log.i(LOG_TAG,item.getTitle().toString());
+        Log.i(LOG_TAG, item.getTitle().toString());
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
 
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(MenuActivity.this);
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
 
             case R.id.sign_in_menu:
-                Intent login = new Intent(MenuActivity.this,PhoneActivity.class);
+                Intent login = new Intent(MenuActivity.this, PhoneActivity.class);
                 startActivity(login);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
@@ -242,7 +303,7 @@ public class MenuActivity extends AppCompatActivity {
                         "Sign out successful",
                         Snackbar.LENGTH_SHORT);
                 signOut.getView().setBackgroundColor(getColor(R.color.signOutSnackbarBackground));
-                ((TextView)signOut.getView()
+                ((TextView) signOut.getView()
                         .findViewById(com.google.android.material.R.id.snackbar_text))
                         .setTextColor(Color.WHITE);
                 signOut.show();
@@ -262,11 +323,11 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
-    private void changeTheme(MenuItem item){
+    private void changeTheme(MenuItem item) {
 
         String mode = item.getTitle().toString();
 
-        if(mode.equalsIgnoreCase(getString(R.string.light_mode)))
+        if (mode.equalsIgnoreCase(getString(R.string.light_mode)))
             mode = getString(R.string.dark_mode);
         else
             mode = getString(R.string.light_mode);
@@ -277,18 +338,18 @@ public class MenuActivity extends AppCompatActivity {
         );
         SharedPreferences.Editor editor = preferences.edit();
 
-        editor.putString("dark_mode",mode);
+        editor.putString("dark_mode", mode);
         editor.apply();
 
         item.setTitle(mode);
 
-        Log.i(LOG_TAG, "Theme changed to "+mode);
+        Log.i(LOG_TAG, "Theme changed to " + mode);
 
         recreate();
 
     }
 
-    private void getItems(){
+    private void getItems() {
 
         items = new ArrayList<>();
 
@@ -298,27 +359,27 @@ public class MenuActivity extends AppCompatActivity {
                 .document(key)
                 .collection("menu")
                 .get()
-                .addOnCompleteListener((task)->{
+                .addOnCompleteListener((task) -> {
 
-                    if(task.isSuccessful() && task.getResult() != null){
+                    if (task.isSuccessful() && task.getResult() != null) {
 
-                        Log.i(LOG_TAG,"Menu fetch successful");
+                        Log.i(LOG_TAG, "Menu fetch successful");
 
-                        for(DocumentSnapshot documentSnapshot : task.getResult().getDocuments()){
+                        for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
 
                             Long price = documentSnapshot.getLong("price");
 
                             Item currentItem = new Item(
                                     documentSnapshot.getId()
-                                    ,documentSnapshot.getString("name")
-                                    ,price == null ? 0 : price
+                                    , documentSnapshot.getString("name")
+                                    , price == null ? 0 : price
                             );
                             items.add(currentItem);
 
                         }
 
                         progressBar.setVisibility(View.INVISIBLE);
-                        if(items.isEmpty()){
+                        if (items.isEmpty()) {
 
                             Log.i(LOG_TAG, "Menu unavailable");
                             noMenuTV.setVisibility(View.VISIBLE);
@@ -329,8 +390,7 @@ public class MenuActivity extends AppCompatActivity {
                         Log.i(LOG_TAG, "Inflating ListView with data fetched");
                         itemAdapter = new ItemAdapter(
                                 MenuActivity.this,
-                                items,
-                                menu
+                                items
                         );
 
                         itemListView.setAdapter(itemAdapter);
@@ -350,7 +410,7 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArrayList("items",items);
+        outState.putParcelableArrayList("items", items);
         super.onSaveInstanceState(outState);
     }
 
@@ -358,14 +418,14 @@ public class MenuActivity extends AppCompatActivity {
     public void recreate() {
         finish();
         startActivity(getIntent());
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.recreate();
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
 }

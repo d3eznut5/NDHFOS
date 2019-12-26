@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Item;
 import com.example.ndhfos.R;
+import com.example.ndhfos.Utility.AppExecutors;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -29,7 +30,9 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
 
     private static final String LOG_TAG = CheckoutItemAdapter.class.getSimpleName();
 
-    public CheckoutItemAdapter(Context context, List<Item> objects){ super(context,0,objects);}
+    public CheckoutItemAdapter(Context context, List<Item> objects){
+        super(context,0,objects);
+    }
 
     @NonNull
     @Override
@@ -108,6 +111,7 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
                     .setPositiveButton("Yes, please",(dialog,which)->{
 
                         deleteItem(item);
+                        item.setQuantity(0);
                         Snackbar itemDeleted = Snackbar.make(((Activity)getContext()).findViewById(android.R.id.content)
                                 , "Removed "+item.getName()+" from cart.",
                                 Snackbar.LENGTH_SHORT
@@ -132,19 +136,27 @@ public class CheckoutItemAdapter extends ArrayAdapter<Item> {
 
     }
 
-    private void deleteItem(Item item){ database.itemDAO().deleteItem(item); }
+    private void deleteItem(Item item){
+        AppExecutors.getInstance()
+            .getDiskIO()
+            .execute(()->database.itemDAO().deleteItem(item));
+        remove(item);
+        notifyDataSetChanged();
+    }
 
     private int updateCart(Item item, boolean increase){
 
         int currentQuantity = item.getQuantity()+(increase?1:-1);
         Log.i(LOG_TAG, currentQuantity+" "+item.getName()+"s in cart");
         if(currentQuantity <= 0) {
-            database.itemDAO().deleteItem(item);
+            AppExecutors.getInstance().getDiskIO().execute(()->database.itemDAO().deleteItem(item));
             currentQuantity = 0;
         } else {
             item.setQuantity(currentQuantity);
-            database.itemDAO().updateItem(item);
+            AppExecutors.getInstance().getDiskIO().execute(()->database.itemDAO().updateItem(item));
         }
+
+        item.setQuantity(currentQuantity);
 
         return currentQuantity;
 

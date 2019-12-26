@@ -31,8 +31,7 @@ public abstract class ItemsDatabase extends RoomDatabase {
                         ItemsDatabase.class,
                         ItemsDatabase.DATABASE_NAME
 
-                ).allowMainThreadQueries()
-                        .build();
+                ).build();
 
             }
 

@@ -22,7 +22,7 @@ public interface ItemDAO{
     LiveData<List<Item>> viewCart();
 
     @Query("SELECT COUNT(*) FROM items;")
-    int getNumberOfItems();
+    LiveData<Integer> getNumberOfItems();
 
     @Insert
     void insertItem(Item newItem);

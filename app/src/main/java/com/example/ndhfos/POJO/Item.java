@@ -11,7 +11,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "items")
-public class Item implements Parcelable {
+public class Item implements Parcelable{
 
     @PrimaryKey @NonNull private String key;
 
@@ -34,6 +34,7 @@ public class Item implements Parcelable {
         this.key = key;
         this.name = name;
         this.price = price;
+        this.quantity = 0;
 
     }
 
@@ -82,6 +83,19 @@ public class Item implements Parcelable {
 
     }
 
+    private boolean isEquivalent(Item item){
+        return this.key.compareToIgnoreCase(item.key) == 0;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        if(obj instanceof Item)
+            return isEquivalent((Item)obj);
+
+        return super.equals(obj);
+    }
+
     @NonNull
     public String getKey() { return key; }
 
@@ -103,4 +117,5 @@ public class Item implements Parcelable {
     public int getQuantity() { return quantity; }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
+
 }

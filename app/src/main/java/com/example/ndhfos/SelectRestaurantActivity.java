@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.example.ndhfos.Adapters.RestaurantAdapter;
 import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Restaurant;
+import com.example.ndhfos.Utility.AppExecutors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -126,7 +127,10 @@ public class SelectRestaurantActivity
         super.onResume();
         supportInvalidateOptionsMenu();
 
-        ItemsDatabase.getInstance(getApplicationContext()).clearAllTables();
+        AppExecutors.getInstance()
+                .getDiskIO()
+                .execute(()->ItemsDatabase.getInstance(getApplicationContext()).clearAllTables());
+
         Log.i(LOG_TAG, "Table Cleared");
 
         if(uiMode != AppCompatDelegate.getDefaultNightMode())

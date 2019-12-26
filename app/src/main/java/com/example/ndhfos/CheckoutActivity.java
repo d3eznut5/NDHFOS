@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,15 +52,17 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private ListView checkoutList;
 
-    private TextView emptyView, orderNumberTV, itemCountTV, totalCostTV;
+    private TextView orderNumberTV, itemCountTV, totalCostTV;
 
     private Spinner blockSpinner;
 
     private RadioGroup paymentOptions;
 
-    private Button placeOrderBT;
+    private Button placeOrderBT, backToMenuBT;
 
-    private View separator;
+    private View separator, emptyView;
+
+    private ProgressBar loading;
 
     private List<Item> items;
 
@@ -203,20 +206,16 @@ public class CheckoutActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         checkoutList = findViewById(R.id.list_checkout);
-
         totalCostHolder = findViewById(R.id.total_cost_holder);
         confirmBlock = findViewById(R.id.confirm_block);
-
         orderNumberTV = findViewById(R.id.order_number_tv);
         orderNumberTV.setVisibility(View.INVISIBLE);
         itemCountTV = findViewById(R.id.item_count_tv);
         totalCostTV = findViewById(R.id.total_cost_tv);
-
         blockSpinner = findViewById(R.id.block_spinner);
-
         paymentOptions = findViewById(R.id.payment_options);
-
         placeOrderBT = findViewById(R.id.order_button);
+
 
         if(loggedIn)
             placeOrderBT.setText(R.string.checkout);
@@ -224,17 +223,24 @@ public class CheckoutActivity extends AppCompatActivity {
             placeOrderBT.setText(R.string.sign_in);
 
         emptyView = findViewById(R.id.empty_view);
+        backToMenuBT = findViewById(R.id.back_to_menu);
         separator = findViewById(R.id.separator);
+        loading = findViewById(R.id.loading);
 
-        database = ItemsDatabase.getInstance(CheckoutActivity.this);
+        emptyView.setVisibility(View.INVISIBLE);
+        backToMenuBT.setEnabled(false);
+        separator.setVisibility(View.INVISIBLE);
+        totalCostHolder.setVisibility(View.INVISIBLE);
+        confirmBlock.setVisibility(View.INVISIBLE);
+        checkoutList.setVisibility(View.INVISIBLE);
+        orderNumberTV.setVisibility(View.INVISIBLE);
+        itemCountTV.setVisibility(View.INVISIBLE);
+        paymentOptions.setVisibility(View.INVISIBLE);
+        placeOrderBT.setVisibility(View.INVISIBLE);
+        loading.setVisibility(View.VISIBLE);
 
-        items = database.itemDAO().viewItems();
+        database = ItemsDatabase.getInstance(getApplicationContext());
 
-        checkoutItemAdapter = new CheckoutItemAdapter(CheckoutActivity.this, items);
-        checkoutList.setAdapter(checkoutItemAdapter);
-
-        itemCountTV.setText(getString(items.size()==1?
-                R.string.number_of_item:R.string.number_of_items,items.size()));
         getOrderNumber();
         getData();
 
@@ -302,6 +308,10 @@ public class CheckoutActivity extends AppCompatActivity {
         );
 
         blockSpinner.setAdapter(blockAdapter);
+        backToMenuBT.setOnClickListener((click)->{
+                Log.e(LOG_TAG,"Yes you are pressing it!!!");
+                NavUtils.navigateUpFromSameTask(CheckoutActivity.this);
+        });
 
     }
 
@@ -327,6 +337,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         if(loggedIn)
             getUserDetails();
+
     }
 
     @Override
@@ -350,6 +361,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 if(items.isEmpty()){
 
                     emptyView.setVisibility(View.VISIBLE);
+                    backToMenuBT.setEnabled(true);
                     separator.setVisibility(View.INVISIBLE);
                     totalCostHolder.setVisibility(View.INVISIBLE);
                     confirmBlock.setVisibility(View.INVISIBLE);
@@ -358,18 +370,35 @@ public class CheckoutActivity extends AppCompatActivity {
                     itemCountTV.setVisibility(View.INVISIBLE);
                     paymentOptions.setVisibility(View.INVISIBLE);
                     placeOrderBT.setVisibility(View.INVISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
 
                 } else {
 
+                    loading.setVisibility(View.INVISIBLE);
                     emptyView.setVisibility(View.INVISIBLE);
+                    backToMenuBT.setEnabled(false);
+                    separator.setVisibility(View.VISIBLE);
+                    totalCostHolder.setVisibility(View.VISIBLE);
+                    confirmBlock.setVisibility(View.VISIBLE);
+                    checkoutList.setVisibility(View.VISIBLE);
+                    orderNumberTV.setVisibility(View.VISIBLE);
+                    itemCountTV.setVisibility(View.VISIBLE);
+                    paymentOptions.setVisibility(View.VISIBLE);
+                    placeOrderBT.setVisibility(View.VISIBLE);
 
-                    checkoutItemAdapter = new CheckoutItemAdapter(CheckoutActivity.this, items);
-                    if(items.size() != this.items.size()) {
+                    itemCountTV.setText(getString(items.size()==1?
+                            R.string.number_of_item:R.string.number_of_items,items.size()));
+
+
+                    if(this.items == null) {
+                        checkoutItemAdapter = new CheckoutItemAdapter(CheckoutActivity.this, items);
                         checkoutList.setAdapter(checkoutItemAdapter);
-                        this.items = items;
-                        itemCountTV.setText(getString(items.size()==1?
-                                R.string.number_of_item:R.string.number_of_items,items.size()));
                     }
+
+                    this.items = items;
+
+                    itemCountTV.setText(getString(items.size()==1?
+                            R.string.number_of_item:R.string.number_of_items,items.size()));
 
                     totalCost = 0;
 
@@ -401,7 +430,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         orderNumber = documents.size()+1;
 
                         orderNumberTV.setText(getString(R.string.order_number, orderNumber));
-                        orderNumberTV.setVisibility(items.size()!=0?View.VISIBLE:View.INVISIBLE);
+                        orderNumberTV.setVisibility(items!=null && items.size()!=0?View.VISIBLE:View.INVISIBLE);
 
                     }
 
