@@ -196,7 +196,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 			item.setQuantity( currentQuantity );
 			AppExecutors.getInstance().getDiskIO().execute( () -> database.itemDAO().updateItem( item ) );
 		}
-		
 		return currentQuantity;
 		
 	}

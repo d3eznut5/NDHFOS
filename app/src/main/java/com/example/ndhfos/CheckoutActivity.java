@@ -27,10 +27,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.ndhfos.Adapters.CheckoutItemAdapter;
-import com.example.ndhfos.Database.ItemsDatabase;
 import com.example.ndhfos.POJO.Item;
+import com.example.ndhfos.Utility.MainViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,7 +46,6 @@ import java.util.Map;
 public class CheckoutActivity extends AppCompatActivity {
 	
 	private static final String LOG_TAG = CheckoutActivity.class.getSimpleName();
-	private ItemsDatabase database;
 	private CheckoutItemAdapter checkoutItemAdapter;
 	private LinearLayout totalCostHolder, confirmBlock;
 	private ListView checkoutList;
@@ -262,9 +262,7 @@ public class CheckoutActivity extends AppCompatActivity {
 		paymentOptions.setVisibility( View.INVISIBLE );
 		placeOrderBT.setVisibility( View.INVISIBLE );
 		loading.setVisibility( View.VISIBLE );
-		
-		database = ItemsDatabase.getInstance( getApplicationContext() );
-		
+
 		getOrderNumber();
 		getData();
 		
@@ -364,8 +362,9 @@ public class CheckoutActivity extends AppCompatActivity {
 	}
 	
 	private void getData () {
-		
-		database.itemDAO().viewCart().observe( CheckoutActivity.this, items -> {
+
+		MainViewModel viewModel = ViewModelProviders.of(CheckoutActivity.this).get(MainViewModel.class);
+		viewModel.getItems().observe( CheckoutActivity.this, items -> {
 			
 			if ( items.isEmpty() ) {
 				

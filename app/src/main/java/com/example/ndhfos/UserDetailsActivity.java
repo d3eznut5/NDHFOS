@@ -112,7 +112,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 		StringTokenizer name = new StringTokenizer( nameET.getText().toString() );
 		String block = blockSpinner.getSelectedItem().toString();
 		
-		FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+		FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 		
 		Map<String, String> user = new HashMap<>();
 		user.put( "first_name", name.nextToken() );
@@ -133,7 +133,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 		
 		user.put( "phoneNumber", FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() );
 		
-		firestoreDb.collection( "users" )
+		firebaseFirestore.collection( "users" )
 				.document( FirebaseAuth.getInstance().getCurrentUser().getUid() )
 				.set( user )
 				.addOnCompleteListener( ( documentRef ) -> {

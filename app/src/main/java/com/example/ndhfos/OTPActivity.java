@@ -115,7 +115,7 @@ public class OTPActivity extends AppCompatActivity {
 			return false;
 		} );
 		
-		initFirebaseCallbacks();
+		initFireBaseCallbacks();
 		sendOTP();
 		
 	}
@@ -129,7 +129,7 @@ public class OTPActivity extends AppCompatActivity {
 		
 	}
 	
-	private void initFirebaseCallbacks () {
+	private void initFireBaseCallbacks() {
 		
 		stateChangedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 			@Override
